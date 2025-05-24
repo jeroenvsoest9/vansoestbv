@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { Project, TeamMemberFormData } from '../../types/project';
+import axios from "axios";
+import { Project, TeamMemberFormData } from "../../types/project";
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 export const projectsApi = {
   getProjects: async () => {
@@ -30,17 +30,29 @@ export const projectsApi = {
   },
 
   addTeamMember: async (projectId: string, member: TeamMemberFormData) => {
-    const response = await axios.post(`${API_URL}/projects/${projectId}/team`, member);
+    const response = await axios.post(
+      `${API_URL}/projects/${projectId}/team`,
+      member,
+    );
     return response.data;
   },
 
-  updateTeamMember: async (projectId: string, memberId: string, data: TeamMemberFormData) => {
-    const response = await axios.put(`${API_URL}/projects/${projectId}/team/${memberId}`, data);
+  updateTeamMember: async (
+    projectId: string,
+    memberId: string,
+    data: TeamMemberFormData,
+  ) => {
+    const response = await axios.put(
+      `${API_URL}/projects/${projectId}/team/${memberId}`,
+      data,
+    );
     return response.data;
   },
 
   removeTeamMember: async (projectId: string, memberId: string) => {
-    const response = await axios.delete(`${API_URL}/projects/${projectId}/team/${memberId}`);
+    const response = await axios.delete(
+      `${API_URL}/projects/${projectId}/team/${memberId}`,
+    );
     return response.data;
-  }
-}; 
+  },
+};

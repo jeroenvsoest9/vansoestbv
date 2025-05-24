@@ -23,7 +23,7 @@ const firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase services
@@ -66,4 +66,4 @@ server.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
 });
 
-export { app, auth, db, storage, functions }; 
+export { app, auth, db, storage, functions };

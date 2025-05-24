@@ -33,11 +33,13 @@ bouw-app-2025/
 ## Functionaliteiten
 
 ### 1. Offerte Aanvraag Systeem
+
 - Dynamisch interactief menu
 - Vragenlijst met vervolgkeuzes
 - Automatische projectmap generatie
 
 ### 2. Project Management
+
 - Planning generator
 - Offerte generator
 - Calculatie systeem
@@ -47,6 +49,7 @@ bouw-app-2025/
 - Materiaalregistratie
 
 ### 3. Opname Tools
+
 - Klus opname assistentie
 - Plattegrond maker (hoek scanning)
 - Kooi configuratie
@@ -54,6 +57,7 @@ bouw-app-2025/
 - Vergunningcheck
 
 ### 4. Documentatie & Notities
+
 - Notitie systeem met foto's
 - Koppeling met projectmap
 - Document management
@@ -61,6 +65,7 @@ bouw-app-2025/
 ## Technologie Stack
 
 ### Frontend
+
 - React.js met TypeScript
 - Material-UI
 - Three.js
@@ -68,6 +73,7 @@ bouw-app-2025/
 - Redux
 
 ### Backend
+
 - Node.js met Express
 - MongoDB
 - Socket.io
@@ -75,6 +81,7 @@ bouw-app-2025/
 - GPS tracking
 
 ### Extra Tools
+
 - TensorFlow.js
 - Google Maps API
 - OCR
@@ -83,17 +90,20 @@ bouw-app-2025/
 ## Installatie
 
 1. Clone de repository:
+
 ```bash
 git clone [repository-url]
 cd bouw-app-2025
 ```
 
 2. Installeer dependencies:
+
 ```bash
 npm run install:all
 ```
 
 3. Start de development servers:
+
 ```bash
 npm run dev
 ```
@@ -101,26 +111,31 @@ npm run dev
 ## Ontwikkeling
 
 ### Frontend Development
+
 ```bash
 cd packages/frontend
 npm run dev
 ```
 
 ### Backend Development
+
 ```bash
 cd packages/backend
 npm run dev
 ```
 
 ## Testen
+
 ```bash
 npm test
 ```
 
 ## Build
+
 ```bash
 npm run build
 ```
 
 ## Deployment
-Zie [DEPLOYMENT.md](DEPLOYMENT.md) voor gedetailleerde deployment instructies. 
+
+Zie [DEPLOYMENT.md](DEPLOYMENT.md) voor gedetailleerde deployment instructies.

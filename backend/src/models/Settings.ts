@@ -1,4 +1,13 @@
-import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { db } from '../config/database';
 
 export interface ISettings {
@@ -20,7 +29,7 @@ export class Settings {
       id: settingsRef.id,
       ...data,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     await setDoc(settingsRef, settings);
@@ -47,14 +56,14 @@ export class Settings {
   static async update(id: string, data: Partial<ISettings>): Promise<ISettings | null> {
     const settingsRef = doc(db, 'settings', id);
     const settingsDoc = await getDoc(settingsRef);
-    
+
     if (!settingsDoc.exists()) {
       return null;
     }
 
     const updates = {
       ...data,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
 
     await updateDoc(settingsRef, updates);
@@ -62,29 +71,31 @@ export class Settings {
     return updatedDoc.data() as ISettings;
   }
 
-  static async findAll(options: {
-    group?: string;
-    type?: ISettings['type'];
-  } = {}): Promise<ISettings[]> {
+  static async findAll(
+    options: {
+      group?: string;
+      type?: ISettings['type'];
+    } = {}
+  ): Promise<ISettings[]> {
     const { group, type } = options;
-    
+
     let q = query(collection(db, 'settings'));
-    
+
     if (group) {
       q = query(q, where('group', '==', group));
     }
-    
+
     if (type) {
       q = query(q, where('type', '==', type));
     }
-    
+
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data() as ISettings);
+    return querySnapshot.docs.map((doc) => doc.data() as ISettings);
   }
 
   static async findByGroup(group: string): Promise<ISettings[]> {
     const q = query(collection(db, 'settings'), where('group', '==', group));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data() as ISettings);
+    return querySnapshot.docs.map((doc) => doc.data() as ISettings);
   }
-} 
+}

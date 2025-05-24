@@ -29,12 +29,12 @@ export class MenuModel {
   async create(data: Omit<Menu, 'id' | 'createdAt' | 'updatedAt'>): Promise<Menu> {
     const menuRef = this.collection.doc();
     const now = new Date();
-    
+
     const menu: Menu = {
       id: menuRef.id,
       ...data,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     await menuRef.set(menu);
@@ -61,7 +61,7 @@ export class MenuModel {
 
     const updateData = {
       ...data,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     await menuRef.update(updateData);
@@ -82,7 +82,7 @@ export class MenuModel {
 
   async list(): Promise<Menu[]> {
     const snapshot = await this.collection.get();
-    return snapshot.docs.map(doc => doc.data() as Menu);
+    return snapshot.docs.map((doc) => doc.data() as Menu);
   }
 
   async addMenuItem(menuId: string, item: Omit<MenuItem, 'id'>): Promise<Menu | null> {
@@ -96,7 +96,7 @@ export class MenuModel {
     const menu = doc.data() as Menu;
     const newItem: MenuItem = {
       id: crypto.randomUUID(),
-      ...item
+      ...item,
     };
 
     menu.items.push(newItem);
@@ -106,7 +106,11 @@ export class MenuModel {
     return menu;
   }
 
-  async updateMenuItem(menuId: string, itemId: string, data: Partial<MenuItem>): Promise<Menu | null> {
+  async updateMenuItem(
+    menuId: string,
+    itemId: string,
+    data: Partial<MenuItem>
+  ): Promise<Menu | null> {
     const menuRef = this.collection.doc(menuId);
     const doc = await menuRef.get();
 
@@ -115,7 +119,7 @@ export class MenuModel {
     }
 
     const menu = doc.data() as Menu;
-    const itemIndex = menu.items.findIndex(item => item.id === itemId);
+    const itemIndex = menu.items.findIndex((item) => item.id === itemId);
 
     if (itemIndex === -1) {
       return null;
@@ -123,7 +127,7 @@ export class MenuModel {
 
     menu.items[itemIndex] = {
       ...menu.items[itemIndex],
-      ...data
+      ...data,
     };
     menu.updatedAt = new Date();
 
@@ -140,7 +144,7 @@ export class MenuModel {
     }
 
     const menu = doc.data() as Menu;
-    menu.items = menu.items.filter(item => item.id !== itemId);
+    menu.items = menu.items.filter((item) => item.id !== itemId);
     menu.updatedAt = new Date();
 
     await menuRef.update(menu);
@@ -157,12 +161,14 @@ export class MenuModel {
 
     const menu = doc.data() as Menu;
     const items = [...menu.items];
-    
+
     // Reorder items based on the provided order
-    menu.items = itemIds.map(id => items.find(item => item.id === id)).filter(Boolean) as MenuItem[];
+    menu.items = itemIds
+      .map((id) => items.find((item) => item.id === id))
+      .filter(Boolean) as MenuItem[];
     menu.updatedAt = new Date();
 
     await menuRef.update(menu);
     return menu;
   }
-} 
+}

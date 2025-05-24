@@ -32,12 +32,12 @@ export class InvoiceModel {
   async create(data: Omit<Invoice, 'id' | 'createdAt' | 'updatedAt'>): Promise<Invoice> {
     const invoiceRef = this.collection.doc();
     const now = new Date();
-    
+
     const invoice: Invoice = {
       id: invoiceRef.id,
       ...data,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     await invoiceRef.set(invoice);
@@ -64,7 +64,7 @@ export class InvoiceModel {
 
     const updateData = {
       ...data,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     await invoiceRef.update(updateData);
@@ -83,10 +83,7 @@ export class InvoiceModel {
     return true;
   }
 
-  async list(filters?: {
-    userId?: string;
-    status?: Invoice['status'];
-  }): Promise<Invoice[]> {
+  async list(filters?: { userId?: string; status?: Invoice['status'] }): Promise<Invoice[]> {
     let query = this.collection;
 
     if (filters?.userId) {
@@ -98,7 +95,7 @@ export class InvoiceModel {
     }
 
     const snapshot = await query.get();
-    return snapshot.docs.map(doc => doc.data() as Invoice);
+    return snapshot.docs.map((doc) => doc.data() as Invoice);
   }
 
   async markAsPaid(id: string): Promise<Invoice | null> {
@@ -113,7 +110,7 @@ export class InvoiceModel {
     await invoiceRef.update({
       status: 'paid',
       paidAt: now,
-      updatedAt: now
+      updatedAt: now,
     });
 
     return (await invoiceRef.get()).data() as Invoice;
@@ -129,7 +126,7 @@ export class InvoiceModel {
 
     await invoiceRef.update({
       status: 'overdue',
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
 
     return (await invoiceRef.get()).data() as Invoice;
@@ -145,7 +142,7 @@ export class InvoiceModel {
 
     await invoiceRef.update({
       status: 'cancelled',
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
 
     return (await invoiceRef.get()).data() as Invoice;
@@ -162,7 +159,7 @@ export class InvoiceModel {
     const invoice = doc.data() as Invoice;
     const newItem: InvoiceItem = {
       id: crypto.randomUUID(),
-      ...item
+      ...item,
     };
 
     invoice.items.push(newItem);
@@ -183,7 +180,7 @@ export class InvoiceModel {
     }
 
     const invoice = doc.data() as Invoice;
-    invoice.items = invoice.items.filter(item => item.id !== itemId);
+    invoice.items = invoice.items.filter((item) => item.id !== itemId);
     invoice.subtotal = invoice.items.reduce((sum, item) => sum + item.total, 0);
     invoice.total = invoice.subtotal + invoice.tax;
     invoice.updatedAt = new Date();
@@ -191,4 +188,4 @@ export class InvoiceModel {
     await invoiceRef.update(invoice);
     return invoice;
   }
-} 
+}

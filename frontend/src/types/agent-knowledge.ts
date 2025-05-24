@@ -1,7 +1,7 @@
 export interface AgentKnowledge {
   id: string;
   agentId: string;
-  type: 'experience' | 'lesson' | 'best_practice' | 'improvement';
+  type: "experience" | "lesson" | "best_practice" | "improvement";
   category: string;
   title: string;
   description: string;
@@ -24,7 +24,7 @@ export interface LearningSession {
   topics: string[];
   date: Date;
   duration: number;
-  status: 'planned' | 'in_progress' | 'completed' | 'cancelled';
+  status: "planned" | "in_progress" | "completed" | "cancelled";
   materials: {
     type: string;
     url: string;
@@ -46,11 +46,11 @@ export interface LearningSession {
 export interface AgentCollaboration {
   id: string;
   agents: string[]; // agentIds
-  type: 'meeting' | 'workshop' | 'review' | 'brainstorming';
+  type: "meeting" | "workshop" | "review" | "brainstorming";
   purpose: string;
   date: Date;
   duration: number;
-  status: 'planned' | 'in_progress' | 'completed';
+  status: "planned" | "in_progress" | "completed";
   agenda: {
     topic: string;
     duration: number;
@@ -62,7 +62,7 @@ export interface AgentCollaboration {
       description: string;
       responsible: string; // agentId
       deadline: Date;
-      status: 'pending' | 'in_progress' | 'completed';
+      status: "pending" | "in_progress" | "completed";
     }[];
     learnings: string[];
   };
@@ -88,7 +88,7 @@ export interface PerformanceReview {
   goals: {
     description: string;
     deadline: Date;
-    status: 'pending' | 'in_progress' | 'completed';
+    status: "pending" | "in_progress" | "completed";
   }[];
   feedback: string;
   rating: number;
@@ -131,7 +131,7 @@ export interface AgentLearningModel {
     targetLevel: number;
     deadline: Date;
     progress: number;
-    status: 'pending' | 'in_progress' | 'completed';
+    status: "pending" | "in_progress" | "completed";
   }[];
   mentoring: {
     mentorId: string;
@@ -143,4 +143,4 @@ export interface AgentLearningModel {
       outcomes: string[];
     }[];
   }[];
-} 
+}

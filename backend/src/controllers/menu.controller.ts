@@ -23,20 +23,20 @@ export class MenuController {
         location,
         items,
         createdBy: userId,
-        updatedBy: userId
+        updatedBy: userId,
       });
 
       res.status(201).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in create menu:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -49,21 +49,21 @@ export class MenuController {
       if (!menu) {
         return res.status(404).json({
           success: false,
-          error: 'Menu not found'
+          error: 'Menu not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in get menu by id:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -76,21 +76,21 @@ export class MenuController {
       if (!menu) {
         return res.status(404).json({
           success: false,
-          error: 'Menu not found'
+          error: 'Menu not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in get menu by location:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -109,27 +109,27 @@ export class MenuController {
         name,
         location,
         items,
-        updatedBy: userId
+        updatedBy: userId,
       });
 
       if (!menu) {
         return res.status(404).json({
           success: false,
-          error: 'Menu not found'
+          error: 'Menu not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in update menu:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -142,19 +142,19 @@ export class MenuController {
       if (!success) {
         return res.status(404).json({
           success: false,
-          error: 'Menu not found'
+          error: 'Menu not found',
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Menu deleted successfully'
+        message: 'Menu deleted successfully',
       });
     } catch (error: any) {
       logger.error('Error in delete menu:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -165,14 +165,14 @@ export class MenuController {
       res.status(200).json({
         success: true,
         data: {
-          menus
-        }
+          menus,
+        },
       });
     } catch (error: any) {
       logger.error('Error in list menus:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -193,27 +193,27 @@ export class MenuController {
         target,
         icon,
         order,
-        parent
+        parent,
       });
 
       if (!menu) {
         return res.status(404).json({
           success: false,
-          error: 'Menu not found'
+          error: 'Menu not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in add menu item:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -234,27 +234,27 @@ export class MenuController {
         target,
         icon,
         order,
-        parent
+        parent,
       });
 
       if (!menu) {
         return res.status(404).json({
           success: false,
-          error: 'Menu or menu item not found'
+          error: 'Menu or menu item not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in update menu item:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -267,21 +267,21 @@ export class MenuController {
       if (!menu) {
         return res.status(404).json({
           success: false,
-          error: 'Menu or menu item not found'
+          error: 'Menu or menu item not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in delete menu item:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -301,22 +301,22 @@ export class MenuController {
       if (!menu) {
         return res.status(404).json({
           success: false,
-          error: 'Menu not found'
+          error: 'Menu not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          menu
-        }
+          menu,
+        },
       });
     } catch (error: any) {
       logger.error('Error in reorder menu items:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
-} 
+}

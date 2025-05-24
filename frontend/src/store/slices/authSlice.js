@@ -1,81 +1,91 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../../services/api';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../services/api";
 
 // Async thunks
 const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.auth.register(userData);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Registratie mislukt');
+      return rejectWithValue(
+        error.response?.data?.message || "Registratie mislukt",
+      );
     }
-  }
+  },
 );
 
 const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await api.auth.login(credentials);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Inloggen mislukt');
+      return rejectWithValue(
+        error.response?.data?.message || "Inloggen mislukt",
+      );
     }
-  }
+  },
 );
 
 const getCurrentUser = createAsyncThunk(
-  'auth/getCurrentUser',
+  "auth/getCurrentUser",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.auth.getCurrentUser();
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Gebruiker ophalen mislukt');
+      return rejectWithValue(
+        error.response?.data?.message || "Gebruiker ophalen mislukt",
+      );
     }
-  }
+  },
 );
 
 const updateProfile = createAsyncThunk(
-  'auth/updateProfile',
+  "auth/updateProfile",
   async (profileData, { rejectWithValue }) => {
     try {
       const response = await api.auth.updateProfile(profileData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Profiel bijwerken mislukt');
+      return rejectWithValue(
+        error.response?.data?.message || "Profiel bijwerken mislukt",
+      );
     }
-  }
+  },
 );
 
 const changePassword = createAsyncThunk(
-  'auth/changePassword',
+  "auth/changePassword",
   async (passwordData, { rejectWithValue }) => {
     try {
       const response = await api.auth.changePassword(passwordData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Wachtwoord wijzigen mislukt');
+      return rejectWithValue(
+        error.response?.data?.message || "Wachtwoord wijzigen mislukt",
+      );
     }
-  }
+  },
 );
 
 // Initial state
 const initialState = {
   user: null,
-  token: localStorage.getItem('token'),
-  isAuthenticated: Boolean(localStorage.getItem('token')),
+  token: localStorage.getItem("token"),
+  isAuthenticated: Boolean(localStorage.getItem("token")),
   loading: false,
-  error: null
+  error: null,
 };
 
 // Auth slice
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     logout: (state) => {
@@ -83,11 +93,11 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
     },
     clearError: (state) => {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     // Register
@@ -139,11 +149,11 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         // If token is invalid, logout the user
-        if (action.payload === 'Ongeldige token') {
+        if (action.payload === "Ongeldige token") {
           state.user = null;
           state.token = null;
           state.isAuthenticated = false;
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
         }
       })
 
@@ -175,7 +185,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
-  }
+  },
 });
 
 // Export actions
@@ -190,5 +200,5 @@ module.exports = {
   updateProfile,
   changePassword,
   clearError,
-  default: authSlice.reducer
-}; 
+  default: authSlice.reducer,
+};

@@ -1,12 +1,12 @@
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import compression from 'compression';
-import morgan from 'morgan';
-import { rateLimit } from 'express-rate-limit';
-import { errorHandler } from '@utils/errorHandler';
-import { connectDB } from '@config/database';
-import { setupRoutes } from '@routes/index';
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+import morgan from "morgan";
+import { rateLimit } from "express-rate-limit";
+import { errorHandler } from "@utils/errorHandler";
+import { connectDB } from "@config/database";
+import { setupRoutes } from "@routes/index";
 
 const app = express();
 
@@ -16,12 +16,12 @@ app.use(cors());
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
 
@@ -40,4 +40,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-export default app; 
+export default app;

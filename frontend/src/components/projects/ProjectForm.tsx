@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -16,22 +16,22 @@ import {
   Alert,
   CircularProgress,
   SelectChangeEvent,
-  Grid
-} from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+  Grid,
+} from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   createProject,
   updateProject,
   getProject,
-  clearError
-} from '../../store/slices/projectsSlice';
-import { Project } from '../../services/api/projects';
+  clearError,
+} from "../../store/slices/projectsSlice";
+import { Project } from "../../services/api/projects";
 
 interface ProjectFormData {
   name: string;
   client: string;
   type: string;
-  status: Project['status'];
+  status: Project["status"];
   startDate: string;
   endDate: string;
   budget: number;
@@ -46,32 +46,32 @@ interface ProjectFormData {
 }
 
 const initialFormData: ProjectFormData = {
-  name: '',
-  client: '',
-  type: '',
-  status: 'In Planning',
-  startDate: '',
-  endDate: '',
+  name: "",
+  client: "",
+  type: "",
+  status: "In Planning",
+  startDate: "",
+  endDate: "",
   budget: 0,
   progress: 0,
-  description: '',
-  address: '',
-  postalCode: '',
-  city: '',
-  contactPerson: '',
-  contactEmail: '',
-  contactPhone: ''
+  description: "",
+  address: "",
+  postalCode: "",
+  city: "",
+  contactPerson: "",
+  contactEmail: "",
+  contactPhone: "",
 };
 
 const projectTypes = [
-  'Renovatie',
-  'Dakkapel',
-  'Aanbouw',
-  'Kozijnen',
-  'Vloeren',
-  'Keuken',
-  'Badkamer',
-  'Anders'
+  "Renovatie",
+  "Dakkapel",
+  "Aanbouw",
+  "Kozijnen",
+  "Vloeren",
+  "Keuken",
+  "Badkamer",
+  "Anders",
 ];
 
 const ProjectForm: React.FC = () => {
@@ -79,14 +79,14 @@ const ProjectForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { currentProject, loading, error } = useAppSelector(
-    (state) => state.projects
+    (state) => state.projects,
   );
 
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<ProjectFormData>(initialFormData);
-  const [errors, setErrors] = useState<Partial<Record<keyof ProjectFormData, string>>>(
-    {}
-  );
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof ProjectFormData, string>>
+  >({});
 
   useEffect(() => {
     if (id) {
@@ -108,13 +108,13 @@ const ProjectForm: React.FC = () => {
         endDate: currentProject.endDate,
         budget: currentProject.budget,
         progress: currentProject.progress,
-        description: currentProject.description || '',
-        address: currentProject.address || '',
-        postalCode: currentProject.postalCode || '',
-        city: currentProject.city || '',
-        contactPerson: currentProject.contactPerson || '',
-        contactEmail: currentProject.contactEmail || '',
-        contactPhone: currentProject.contactPhone || ''
+        description: currentProject.description || "",
+        address: currentProject.address || "",
+        postalCode: currentProject.postalCode || "",
+        city: currentProject.city || "",
+        contactPerson: currentProject.contactPerson || "",
+        contactEmail: currentProject.contactEmail || "",
+        contactPhone: currentProject.contactPhone || "",
       });
     }
   }, [currentProject]);
@@ -124,29 +124,33 @@ const ProjectForm: React.FC = () => {
 
     switch (step) {
       case 0:
-        if (!formData.name) newErrors.name = 'Project name is required';
-        if (!formData.client) newErrors.client = 'Client name is required';
-        if (!formData.type) newErrors.type = 'Project type is required';
-        if (!formData.startDate) newErrors.startDate = 'Start date is required';
-        if (!formData.endDate) newErrors.endDate = 'End date is required';
-        if (formData.budget <= 0) newErrors.budget = 'Budget must be greater than 0';
+        if (!formData.name) newErrors.name = "Project name is required";
+        if (!formData.client) newErrors.client = "Client name is required";
+        if (!formData.type) newErrors.type = "Project type is required";
+        if (!formData.startDate) newErrors.startDate = "Start date is required";
+        if (!formData.endDate) newErrors.endDate = "End date is required";
+        if (formData.budget <= 0)
+          newErrors.budget = "Budget must be greater than 0";
         if (new Date(formData.endDate) < new Date(formData.startDate)) {
-          newErrors.endDate = 'End date must be after start date';
+          newErrors.endDate = "End date must be after start date";
         }
         break;
       case 1:
-        if (!formData.address) newErrors.address = 'Address is required';
-        if (!formData.postalCode) newErrors.postalCode = 'Postal code is required';
-        if (!formData.city) newErrors.city = 'City is required';
+        if (!formData.address) newErrors.address = "Address is required";
+        if (!formData.postalCode)
+          newErrors.postalCode = "Postal code is required";
+        if (!formData.city) newErrors.city = "City is required";
         break;
       case 2:
-        if (!formData.contactPerson) newErrors.contactPerson = 'Contact person is required';
+        if (!formData.contactPerson)
+          newErrors.contactPerson = "Contact person is required";
         if (!formData.contactEmail) {
-          newErrors.contactEmail = 'Contact email is required';
+          newErrors.contactEmail = "Contact email is required";
         } else if (!/\S+@\S+\.\S+/.test(formData.contactEmail)) {
-          newErrors.contactEmail = 'Invalid email format';
+          newErrors.contactEmail = "Invalid email format";
         }
-        if (!formData.contactPhone) newErrors.contactPhone = 'Contact phone is required';
+        if (!formData.contactPhone)
+          newErrors.contactPhone = "Contact phone is required";
         break;
     }
 
@@ -172,7 +176,7 @@ const ProjectForm: React.FC = () => {
         } else {
           await dispatch(createProject(formData)).unwrap();
         }
-        navigate('/projects');
+        navigate("/projects");
       } catch (err) {
         // Error is handled by the projects slice
       }
@@ -180,12 +184,14 @@ const ProjectForm: React.FC = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }> | SelectChangeEvent
+    e:
+      | React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
+      | SelectChangeEvent,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name as keyof ProjectFormData]: value
+      [name as keyof ProjectFormData]: value,
     }));
     // Clear error when field is modified
     if (name && errors[name as keyof ProjectFormData]) {
@@ -295,7 +301,7 @@ const ProjectForm: React.FC = () => {
                 helperText={errors.budget}
                 required
                 InputProps={{
-                  startAdornment: '€'
+                  startAdornment: "€",
                 }}
               />
             </Grid>
@@ -404,7 +410,7 @@ const ProjectForm: React.FC = () => {
     <Box sx={{ p: 3 }}>
       <Paper sx={{ p: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          {id ? 'Edit Project' : 'New Project'}
+          {id ? "Edit Project" : "New Project"}
         </Typography>
 
         {error && (
@@ -427,18 +433,14 @@ const ProjectForm: React.FC = () => {
 
         {renderStepContent(activeStep)}
 
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
           {activeStep > 0 && (
             <Button onClick={handleBack} sx={{ mr: 1 }}>
               Back
             </Button>
           )}
           {activeStep < 2 ? (
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              disabled={loading}
-            >
+            <Button variant="contained" onClick={handleNext} disabled={loading}>
               Next
             </Button>
           ) : (
@@ -448,7 +450,7 @@ const ProjectForm: React.FC = () => {
               disabled={loading}
               startIcon={loading ? <CircularProgress size={20} /> : null}
             >
-              {loading ? 'Saving...' : id ? 'Update Project' : 'Create Project'}
+              {loading ? "Saving..." : id ? "Update Project" : "Create Project"}
             </Button>
           )}
         </Box>
@@ -457,4 +459,4 @@ const ProjectForm: React.FC = () => {
   );
 };
 
-export default ProjectForm; 
+export default ProjectForm;

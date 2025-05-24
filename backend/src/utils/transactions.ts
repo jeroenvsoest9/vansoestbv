@@ -10,11 +10,7 @@ export interface TransactionOperation {
 
 export const validateTransactionOperation = (operation: TransactionOperation): void => {
   if (!operation.type || !['get', 'set', 'update', 'delete'].includes(operation.type)) {
-    throw new FirestoreError(
-      'Invalid transaction operation type',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Invalid transaction operation type', 'invalid-argument', 400);
   }
 
   if (!operation.path || typeof operation.path !== 'string') {
@@ -88,4 +84,4 @@ export const executeBatchTransaction = async (
   }
 
   return results;
-}; 
+};

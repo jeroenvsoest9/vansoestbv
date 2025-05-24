@@ -17,7 +17,7 @@ export const convertFirebaseUser = (user: FirebaseUser): AuthUser => {
     email: user.email,
     displayName: user.displayName,
     photoURL: user.photoURL,
-    emailVerified: user.emailVerified
+    emailVerified: user.emailVerified,
   };
 };
 
@@ -28,7 +28,7 @@ export const convertAdminUser = (user: AdminUser): AuthUser => {
     displayName: user.displayName,
     photoURL: user.photoURL,
     emailVerified: user.emailVerified,
-    customClaims: user.customClaims
+    customClaims: user.customClaims,
   };
 };
 
@@ -53,11 +53,19 @@ export const validateCustomClaims = (claims: Record<string, any>): void => {
 
   for (const [key, value] of Object.entries(claims)) {
     if (typeof key !== 'string' || !key) {
-      throw new FirestoreError('Custom claim key must be a non-empty string', 'invalid-argument', 400);
+      throw new FirestoreError(
+        'Custom claim key must be a non-empty string',
+        'invalid-argument',
+        400
+      );
     }
 
     if (value === undefined || value === null) {
-      throw new FirestoreError(`Custom claim value for ${key} cannot be undefined or null`, 'invalid-argument', 400);
+      throw new FirestoreError(
+        `Custom claim value for ${key} cannot be undefined or null`,
+        'invalid-argument',
+        400
+      );
     }
   }
-}; 
+};

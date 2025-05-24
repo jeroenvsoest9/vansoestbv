@@ -14,7 +14,7 @@ async function backupFirestore() {
   const backup: Record<string, any[]> = {};
   for (const name of collections) {
     const snapshot = await adminDb.collection(name).get();
-    backup[name] = snapshot.docs.map(doc => doc.data());
+    backup[name] = snapshot.docs.map((doc) => doc.data());
   }
   const backupPath = path.join(BACKUP_DIR, `firestore-${timestamp}.json`);
   fs.writeFileSync(backupPath, JSON.stringify(backup, null, 2));
@@ -43,4 +43,4 @@ async function main() {
   console.log('Backup compleet!');
 }
 
-main().then(() => process.exit(0)); 
+main().then(() => process.exit(0));

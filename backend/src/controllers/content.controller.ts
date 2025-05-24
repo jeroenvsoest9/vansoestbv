@@ -26,8 +26,8 @@ export class ContentController {
         const file = bucket.file(`content/${Date.now()}-${req.file.originalname}`);
         await file.save(req.file.buffer, {
           metadata: {
-            contentType: req.file.mimetype
-          }
+            contentType: req.file.mimetype,
+          },
         });
         featuredImage = file.publicUrl();
       }
@@ -42,20 +42,20 @@ export class ContentController {
         author,
         tags,
         meta,
-        status: 'draft'
+        status: 'draft',
       });
 
       res.status(201).json({
         success: true,
         data: {
-          content: newContent
-        }
+          content: newContent,
+        },
       });
     } catch (error: any) {
       logger.error('Error in create content:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -68,21 +68,21 @@ export class ContentController {
       if (!content) {
         return res.status(404).json({
           success: false,
-          error: 'Content not found'
+          error: 'Content not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          content
-        }
+          content,
+        },
       });
     } catch (error: any) {
       logger.error('Error in get content by id:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -95,21 +95,21 @@ export class ContentController {
       if (!content) {
         return res.status(404).json({
           success: false,
-          error: 'Content not found'
+          error: 'Content not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          content
-        }
+          content,
+        },
       });
     } catch (error: any) {
       logger.error('Error in get content by slug:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -126,8 +126,8 @@ export class ContentController {
         const file = bucket.file(`content/${Date.now()}-${req.file.originalname}`);
         await file.save(req.file.buffer, {
           metadata: {
-            contentType: req.file.mimetype
-          }
+            contentType: req.file.mimetype,
+          },
         });
         featuredImage = file.publicUrl();
       }
@@ -139,27 +139,27 @@ export class ContentController {
         excerpt,
         featuredImage,
         tags,
-        meta
+        meta,
       });
 
       if (!updatedContent) {
         return res.status(404).json({
           success: false,
-          error: 'Content not found'
+          error: 'Content not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          content: updatedContent
-        }
+          content: updatedContent,
+        },
       });
     } catch (error: any) {
       logger.error('Error in update content:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -172,19 +172,19 @@ export class ContentController {
       if (!success) {
         return res.status(404).json({
           success: false,
-          error: 'Content not found'
+          error: 'Content not found',
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Content deleted successfully'
+        message: 'Content deleted successfully',
       });
     } catch (error: any) {
       logger.error('Error in delete content:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -196,20 +196,20 @@ export class ContentController {
         type: type as any,
         status: status as any,
         author: author as string,
-        tag: tag as string
+        tag: tag as string,
       });
 
       res.status(200).json({
         success: true,
         data: {
-          content
-        }
+          content,
+        },
       });
     } catch (error: any) {
       logger.error('Error in list content:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -222,21 +222,21 @@ export class ContentController {
       if (!content) {
         return res.status(404).json({
           success: false,
-          error: 'Content not found'
+          error: 'Content not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          content
-        }
+          content,
+        },
       });
     } catch (error: any) {
       logger.error('Error in publish content:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -249,22 +249,22 @@ export class ContentController {
       if (!content) {
         return res.status(404).json({
           success: false,
-          error: 'Content not found'
+          error: 'Content not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          content
-        }
+          content,
+        },
       });
     } catch (error: any) {
       logger.error('Error in archive content:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
-} 
+}

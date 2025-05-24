@@ -1,14 +1,14 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
-} from '@mui/material';
-import { hideConfirmDialog } from '../../store/slices/uiSlice';
+  Button,
+} from "@mui/material";
+import { hideConfirmDialog } from "../../store/slices/uiSlice";
 
 const ConfirmDialog = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const ConfirmDialog = () => {
     confirmLabel,
     cancelLabel,
     onConfirm,
-    onCancel
+    onCancel,
   } = useSelector((state) => state.ui.confirmDialog);
 
   const handleCancel = () => {
@@ -43,9 +43,7 @@ const ConfirmDialog = () => {
       aria-labelledby="confirm-dialog-title"
       aria-describedby="confirm-dialog-description"
     >
-      <DialogTitle id="confirm-dialog-title">
-        {title}
-      </DialogTitle>
+      <DialogTitle id="confirm-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="confirm-dialog-description">
           {message}
@@ -53,14 +51,19 @@ const ConfirmDialog = () => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel} color="primary">
-          {cancelLabel || 'Annuleren'}
+          {cancelLabel || "Annuleren"}
         </Button>
-        <Button onClick={handleConfirm} color="primary" variant="contained" autoFocus>
-          {confirmLabel || 'Bevestigen'}
+        <Button
+          onClick={handleConfirm}
+          color="primary"
+          variant="contained"
+          autoFocus
+        >
+          {confirmLabel || "Bevestigen"}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default ConfirmDialog; 
+export default ConfirmDialog;

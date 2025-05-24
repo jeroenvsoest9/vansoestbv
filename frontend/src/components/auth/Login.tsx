@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -7,20 +7,20 @@ import {
   TextField,
   Button,
   Link,
-  Alert
-} from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { login, clearError } from '../../store/slices/authSlice';
+  Alert,
+} from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { login, clearError } from "../../store/slices/authSlice";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { loading, error } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as any)?.from?.pathname || '/';
+  const from = (location.state as any)?.from?.pathname || "/";
 
   useEffect(() => {
     return () => {
@@ -41,19 +41,19 @@ const Login: React.FC = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'background.default'
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: "background.default",
       }}
     >
       <Paper
         elevation={3}
         sx={{
           p: 4,
-          width: '100%',
-          maxWidth: 400
+          width: "100%",
+          maxWidth: 400,
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom align="center">
@@ -91,9 +91,9 @@ const Login: React.FC = () => {
             sx={{ mt: 3, mb: 2 }}
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </Button>
-          <Box sx={{ textAlign: 'center' }}>
+          <Box sx={{ textAlign: "center" }}>
             <Link href="/register" variant="body2">
               Don't have an account? Sign up
             </Link>
@@ -104,4 +104,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login; 
+export default Login;

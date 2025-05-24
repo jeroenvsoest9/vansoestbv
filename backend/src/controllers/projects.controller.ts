@@ -7,11 +7,17 @@ export class ProjectsController {
   // 1. Start offerte-aanvraag, retourneer dynamische vragenlijst
   async request(req: Request, res: Response, next: NextFunction) {
     try {
-      const { /* client, type */ } = req.body;
+      const {
+        /* client, type */
+      } = req.body;
       // Dynamische vragen genereren (stub)
       const questions = [
         { id: 'bouwtype', label: 'Wat voor project?', options: ['aanbouw', 'opbouw', 'dakkapel'] },
-        { id: 'oppervlakte', label: 'Wat is de gewenste oppervlakte?', options: ['<20m2', '20-40m2', '>40m2'] }
+        {
+          id: 'oppervlakte',
+          label: 'Wat is de gewenste oppervlakte?',
+          options: ['<20m2', '20-40m2', '>40m2'],
+        },
       ];
       res.json({ success: true, questions });
     } catch (error) {

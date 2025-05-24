@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -16,8 +16,8 @@ import {
   Button,
   TextField,
   Alert,
-  CircularProgress
-} from '@mui/material';
+  CircularProgress,
+} from "@mui/material";
 import {
   Build as BuildIcon,
   Assignment as AssignmentIcon,
@@ -28,11 +28,11 @@ import {
   Timeline as TimelineIcon,
   People as PeopleIcon,
   AttachMoney as MoneyIcon,
-  Description as DescriptionIcon
-} from '@mui/icons-material';
-import { Project } from '../../types/project';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { updateProject } from '../../store/slices/projectsSlice';
+  Description as DescriptionIcon,
+} from "@mui/icons-material";
+import { Project } from "../../types/project";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { updateProject } from "../../store/slices/projectsSlice";
 
 interface ProjectManagerProps {
   project: Project;
@@ -40,22 +40,30 @@ interface ProjectManagerProps {
 
 interface ManagerAction {
   id: string;
-  type: 'warning' | 'info' | 'success' | 'error';
+  type: "warning" | "info" | "success" | "error";
   title: string;
   description: string;
-  priority: 'high' | 'medium' | 'low';
-  category: 'planning' | 'finance' | 'team' | 'risk' | 'quality' | 'communication';
-  status: 'pending' | 'in_progress' | 'completed';
+  priority: "high" | "medium" | "low";
+  category:
+    | "planning"
+    | "finance"
+    | "team"
+    | "risk"
+    | "quality"
+    | "communication";
+  status: "pending" | "in_progress" | "completed";
   createdAt: Date;
   dueDate?: Date;
 }
 
-type ActionStatus = ManagerAction['status'];
+type ActionStatus = ManagerAction["status"];
 
 const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
   const dispatch = useAppDispatch();
   const [actions, setActions] = useState<ManagerAction[]>([]);
-  const [selectedAction, setSelectedAction] = useState<ManagerAction | null>(null);
+  const [selectedAction, setSelectedAction] = useState<ManagerAction | null>(
+    null,
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -73,14 +81,15 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
       // Check project timeline
       if (project.endDate && new Date(project.endDate) < new Date()) {
         const timelineAction: ManagerAction = {
-          id: 'timeline-1',
-          type: 'warning',
-          title: 'Project Deadline Overschreden',
-          description: 'Het project heeft de geplande einddatum overschreden. Directe actie vereist.',
-          priority: 'high',
-          category: 'planning',
-          status: 'pending' as ActionStatus,
-          createdAt: new Date()
+          id: "timeline-1",
+          type: "warning",
+          title: "Project Deadline Overschreden",
+          description:
+            "Het project heeft de geplande einddatum overschreden. Directe actie vereist.",
+          priority: "high",
+          category: "planning",
+          status: "pending" as ActionStatus,
+          createdAt: new Date(),
         };
         newActions.push(timelineAction);
       }
@@ -88,14 +97,14 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
       // Check budget
       if (project.budget && project.costs && project.costs > project.budget) {
         const budgetAction: ManagerAction = {
-          id: 'budget-1',
-          type: 'error',
-          title: 'Budget Overschreden',
-          description: 'De projectkosten overschrijden het beschikbare budget.',
-          priority: 'high',
-          category: 'finance',
-          status: 'pending' as ActionStatus,
-          createdAt: new Date()
+          id: "budget-1",
+          type: "error",
+          title: "Budget Overschreden",
+          description: "De projectkosten overschrijden het beschikbare budget.",
+          priority: "high",
+          category: "finance",
+          status: "pending" as ActionStatus,
+          createdAt: new Date(),
         };
         newActions.push(budgetAction);
       }
@@ -103,14 +112,14 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
       // Check team composition
       if (!project.team || project.team.length === 0) {
         const teamAction: ManagerAction = {
-          id: 'team-1',
-          type: 'warning',
-          title: 'Team Niet Samengesteld',
-          description: 'Er zijn nog geen teamleden toegewezen aan het project.',
-          priority: 'medium',
-          category: 'team',
-          status: 'pending' as ActionStatus,
-          createdAt: new Date()
+          id: "team-1",
+          type: "warning",
+          title: "Team Niet Samengesteld",
+          description: "Er zijn nog geen teamleden toegewezen aan het project.",
+          priority: "medium",
+          category: "team",
+          status: "pending" as ActionStatus,
+          createdAt: new Date(),
         };
         newActions.push(teamAction);
       }
@@ -119,7 +128,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
 
       setActions(newActions);
     } catch (error) {
-      console.error('Error analyzing project:', error);
+      console.error("Error analyzing project:", error);
     } finally {
       setLoading(false);
     }
@@ -133,22 +142,27 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
   const handleActionComplete = async () => {
     if (selectedAction) {
       // Update action status
-      const updatedActions = actions.map(action =>
+      const updatedActions = actions.map((action) =>
         action.id === selectedAction.id
-          ? { ...action, status: 'completed' }
-          : action
+          ? { ...action, status: "completed" }
+          : action,
       );
       setActions(updatedActions);
 
       // Update project if necessary
-      if (selectedAction.category === 'planning' || selectedAction.category === 'finance') {
-        await dispatch(updateProject({
-          id: project._id,
-          data: {
-            // Add relevant updates based on action
-            lastUpdated: new Date().toISOString()
-          }
-        }));
+      if (
+        selectedAction.category === "planning" ||
+        selectedAction.category === "finance"
+      ) {
+        await dispatch(
+          updateProject({
+            id: project._id,
+            data: {
+              // Add relevant updates based on action
+              lastUpdated: new Date().toISOString(),
+            },
+          }),
+        );
       }
 
       setDialogOpen(false);
@@ -158,17 +172,17 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
 
   const getActionIcon = (category: string) => {
     switch (category) {
-      case 'planning':
+      case "planning":
         return <TimelineIcon />;
-      case 'finance':
+      case "finance":
         return <MoneyIcon />;
-      case 'team':
+      case "team":
         return <PeopleIcon />;
-      case 'risk':
+      case "risk":
         return <WarningIcon />;
-      case 'quality':
+      case "quality":
         return <CheckCircleIcon />;
-      case 'communication':
+      case "communication":
         return <DescriptionIcon />;
       default:
         return <InfoIcon />;
@@ -177,14 +191,14 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
 
   const getActionColor = (type: string) => {
     switch (type) {
-      case 'warning':
-        return 'warning';
-      case 'error':
-        return 'error';
-      case 'success':
-        return 'success';
+      case "warning":
+        return "warning";
+      case "error":
+        return "error";
+      case "success":
+        return "success";
       default:
-        return 'info';
+        return "info";
     }
   };
 
@@ -200,9 +214,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
     <Paper sx={{ p: 3 }}>
       <Box display="flex" alignItems="center" mb={3}>
         <BuildIcon sx={{ mr: 1 }} />
-        <Typography variant="h6">
-          Project Manager Dashboard
-        </Typography>
+        <Typography variant="h6">Project Manager Dashboard</Typography>
       </Box>
 
       <List>
@@ -213,14 +225,12 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
             sx={{
               mb: 1,
               border: 1,
-              borderColor: 'divider',
+              borderColor: "divider",
               borderRadius: 1,
-              cursor: 'pointer'
+              cursor: "pointer",
             }}
           >
-            <ListItemIcon>
-              {getActionIcon(action.category)}
-            </ListItemIcon>
+            <ListItemIcon>{getActionIcon(action.category)}</ListItemIcon>
             <ListItemText
               primary={action.title}
               secondary={action.description}
@@ -229,19 +239,24 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
               <Chip
                 label={action.priority}
                 size="small"
-                color={action.priority === 'high' ? 'error' : 'default'}
+                color={action.priority === "high" ? "error" : "default"}
               />
               <Chip
                 label={action.status}
                 size="small"
-                color={action.status === 'completed' ? 'success' : 'default'}
+                color={action.status === "completed" ? "success" : "default"}
               />
             </Box>
           </ListItem>
         ))}
       </List>
 
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         {selectedAction && (
           <>
             <DialogTitle>
@@ -251,7 +266,10 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
               </Box>
             </DialogTitle>
             <DialogContent>
-              <Alert severity={getActionColor(selectedAction.type)} sx={{ mb: 2 }}>
+              <Alert
+                severity={getActionColor(selectedAction.type)}
+                sx={{ mb: 2 }}
+              >
                 {selectedAction.description}
               </Alert>
               <Typography variant="body2" color="textSecondary">
@@ -274,7 +292,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setDialogOpen(false)}>Sluiten</Button>
-              {selectedAction.status !== 'completed' && (
+              {selectedAction.status !== "completed" && (
                 <Button
                   variant="contained"
                   color="primary"
@@ -291,4 +309,4 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ project }) => {
   );
 };
 
-export default ProjectManager; 
+export default ProjectManager;

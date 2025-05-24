@@ -15,16 +15,18 @@ const server = express();
 
 // Security middleware
 server.use(helmet());
-server.use(cors({
-  origin: process.env.CORS_ORIGIN || 'https://vansoest.nl',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+server.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'https://vansoest.nl',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 900000,
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
 });
 server.use(limiter);
 
@@ -55,7 +57,7 @@ server.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined,
   });
 });
 
@@ -63,4 +65,4 @@ server.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-}); 
+});

@@ -4,12 +4,12 @@ export const convertDoc = <T>(doc: QueryDocumentSnapshot<DocumentData>): T => {
   const data = doc.data();
   return {
     id: doc.id,
-    ...data
+    ...data,
   } as T;
 };
 
 export const convertDocs = <T>(docs: QueryDocumentSnapshot<DocumentData>[]): T[] => {
-  return docs.map(doc => convertDoc<T>(doc));
+  return docs.map((doc) => convertDoc<T>(doc));
 };
 
 export const convertTimestamp = (timestamp: any): Date => {
@@ -21,18 +21,18 @@ export const convertTimestamp = (timestamp: any): Date => {
 
 export const convertToFirestore = (data: any): DocumentData => {
   const result: DocumentData = {};
-  
+
   for (const [key, value] of Object.entries(data)) {
     if (value instanceof Date) {
       result[key] = value;
     } else if (Array.isArray(value)) {
-      result[key] = value.map(item => convertToFirestore(item));
+      result[key] = value.map((item) => convertToFirestore(item));
     } else if (value && typeof value === 'object') {
       result[key] = convertToFirestore(value);
     } else {
       result[key] = value;
     }
   }
-  
+
   return result;
-}; 
+};

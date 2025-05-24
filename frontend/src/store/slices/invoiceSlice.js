@@ -1,117 +1,117 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Create async thunks for invoice actions
 export const fetchInvoices = createAsyncThunk(
-  'invoices/fetchInvoices',
+  "invoices/fetchInvoices",
   async (_, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
-      const response = await axios.get('/api/invoices', {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get("/api/invoices", {
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const fetchInvoiceById = createAsyncThunk(
-  'invoices/fetchInvoiceById',
+  "invoices/fetchInvoiceById",
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       const response = await axios.get(`/api/invoices/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const createInvoice = createAsyncThunk(
-  'invoices/createInvoice',
+  "invoices/createInvoice",
   async (invoiceData, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
-      const response = await axios.post('/api/invoices', invoiceData, {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.post("/api/invoices", invoiceData, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const updateInvoice = createAsyncThunk(
-  'invoices/updateInvoice',
+  "invoices/updateInvoice",
   async ({ id, invoiceData }, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       const response = await axios.put(`/api/invoices/${id}`, invoiceData, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteInvoice = createAsyncThunk(
-  'invoices/deleteInvoice',
+  "invoices/deleteInvoice",
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       await axios.delete(`/api/invoices/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return id;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const generateInvoicePDF = createAsyncThunk(
-  'invoices/generatePDF',
+  "invoices/generatePDF",
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       const response = await axios.get(`/api/invoices/${id}/pdf`, {
         headers: { Authorization: `Bearer ${token}` },
-        responseType: 'blob'
+        responseType: "blob",
       });
-      
+
       // Create blob link to download
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', `invoice-${id}.pdf`);
+      link.setAttribute("download", `invoice-${id}.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
-      
+
       return id;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // Create the invoice slice
 const invoiceSlice = createSlice({
-  name: 'invoices',
+  name: "invoices",
   initialState: {
     invoices: [],
     currentInvoice: null,
     isLoading: false,
     error: null,
-    pdfGenerating: false
+    pdfGenerating: false,
   },
   reducers: {
     clearInvoiceError: (state) => {
@@ -119,7 +119,7 @@ const invoiceSlice = createSlice({
     },
     clearCurrentInvoice: (state) => {
       state.currentInvoice = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -134,7 +134,7 @@ const invoiceSlice = createSlice({
       })
       .addCase(fetchInvoices.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to fetch invoices';
+        state.error = action.payload?.message || "Failed to fetch invoices";
       })
       // Fetch Invoice By Id
       .addCase(fetchInvoiceById.pending, (state) => {
@@ -147,7 +147,7 @@ const invoiceSlice = createSlice({
       })
       .addCase(fetchInvoiceById.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to fetch invoice';
+        state.error = action.payload?.message || "Failed to fetch invoice";
       })
       // Create Invoice
       .addCase(createInvoice.pending, (state) => {
@@ -160,7 +160,7 @@ const invoiceSlice = createSlice({
       })
       .addCase(createInvoice.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to create invoice';
+        state.error = action.payload?.message || "Failed to create invoice";
       })
       // Update Invoice
       .addCase(updateInvoice.pending, (state) => {
@@ -169,17 +169,22 @@ const invoiceSlice = createSlice({
       })
       .addCase(updateInvoice.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.invoices.findIndex(i => i._id === action.payload._id);
+        const index = state.invoices.findIndex(
+          (i) => i._id === action.payload._id,
+        );
         if (index !== -1) {
           state.invoices[index] = action.payload;
         }
-        if (state.currentInvoice && state.currentInvoice._id === action.payload._id) {
+        if (
+          state.currentInvoice &&
+          state.currentInvoice._id === action.payload._id
+        ) {
           state.currentInvoice = action.payload;
         }
       })
       .addCase(updateInvoice.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to update invoice';
+        state.error = action.payload?.message || "Failed to update invoice";
       })
       // Delete Invoice
       .addCase(deleteInvoice.pending, (state) => {
@@ -188,14 +193,17 @@ const invoiceSlice = createSlice({
       })
       .addCase(deleteInvoice.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.invoices = state.invoices.filter(i => i._id !== action.payload);
-        if (state.currentInvoice && state.currentInvoice._id === action.payload) {
+        state.invoices = state.invoices.filter((i) => i._id !== action.payload);
+        if (
+          state.currentInvoice &&
+          state.currentInvoice._id === action.payload
+        ) {
           state.currentInvoice = null;
         }
       })
       .addCase(deleteInvoice.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to delete invoice';
+        state.error = action.payload?.message || "Failed to delete invoice";
       })
       // Generate PDF
       .addCase(generateInvoicePDF.pending, (state) => {
@@ -207,10 +215,10 @@ const invoiceSlice = createSlice({
       })
       .addCase(generateInvoicePDF.rejected, (state, action) => {
         state.pdfGenerating = false;
-        state.error = action.payload?.message || 'Failed to generate PDF';
+        state.error = action.payload?.message || "Failed to generate PDF";
       });
-  }
+  },
 });
 
 export const { clearInvoiceError, clearCurrentInvoice } = invoiceSlice.actions;
-export default invoiceSlice.reducer; 
+export default invoiceSlice.reducer;

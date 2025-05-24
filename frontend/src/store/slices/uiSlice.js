@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState: {
     sidebarOpen: true,
     darkMode: false,
@@ -10,13 +10,13 @@ const uiSlice = createSlice({
     dialogProps: null,
     confirmDialog: {
       open: false,
-      title: '',
-      message: '',
-      confirmLabel: 'Confirm',
-      cancelLabel: 'Cancel',
+      title: "",
+      message: "",
+      confirmLabel: "Confirm",
+      cancelLabel: "Cancel",
       onConfirm: null,
-      onCancel: null
-    }
+      onCancel: null,
+    },
   },
   reducers: {
     toggleSidebar: (state) => {
@@ -35,17 +35,17 @@ const uiSlice = createSlice({
       state.notifications.push({
         id: Date.now(),
         ...action.payload,
-        read: false
+        read: false,
       });
     },
     removeNotification: (state, action) => {
       state.notifications = state.notifications.filter(
-        (notification) => notification.id !== action.payload
+        (notification) => notification.id !== action.payload,
       );
     },
     markNotificationAsRead: (state, action) => {
       const notification = state.notifications.find(
-        (notification) => notification.id === action.payload
+        (notification) => notification.id === action.payload,
       );
       if (notification) {
         notification.read = true;
@@ -66,20 +66,20 @@ const uiSlice = createSlice({
       state.confirmDialog = {
         ...state.confirmDialog,
         open: true,
-        ...action.payload
+        ...action.payload,
       };
     },
     hideConfirmDialog: (state) => {
       state.confirmDialog = {
         ...state.confirmDialog,
         open: false,
-        title: '',
-        message: '',
+        title: "",
+        message: "",
         onConfirm: null,
-        onCancel: null
+        onCancel: null,
       };
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -94,7 +94,7 @@ export const {
   openDialog,
   closeDialog,
   showConfirmDialog,
-  hideConfirmDialog
+  hideConfirmDialog,
 } = uiSlice.actions;
 
-export default uiSlice.reducer; 
+export default uiSlice.reducer;

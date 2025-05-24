@@ -52,4 +52,4 @@ Backend service voor Van Soest CMS gebouwd met Node.js, Express, TypeScript en F
 
 ## Licentie
 
-MIT 
+MIT

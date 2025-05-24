@@ -12,26 +12,19 @@ interface AuthRequest extends Request {
   };
 }
 
-export const authenticate = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const authenticate = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
-    
+
     if (!authHeader?.startsWith('Bearer ')) {
       throw new AppError('No token provided', 401);
     }
 
     const token = authHeader.split(' ')[1];
     const decodedToken = await getAuth().verifyIdToken(token);
-    
+
     // Get user role from Firestore
-    const userDoc = await getFirestore()
-      .collection('users')
-      .doc(decodedToken.uid)
-      .get();
+    const userDoc = await getFirestore().collection('users').doc(decodedToken.uid).get();
 
     if (!userDoc.exists) {
       throw new AppError('User not found', 404);
@@ -41,7 +34,7 @@ export const authenticate = async (
     req.user = {
       uid: decodedToken.uid,
       email: decodedToken.email || '',
-      role: userData?.role || 'user'
+      role: userData?.role || 'user',
     };
 
     next();
@@ -66,4 +59,4 @@ export const requireRole = (roles: string[]) => {
 };
 
 export const requireAdmin = requireRole(['admin']);
-export const requireEditor = requireRole(['admin', 'editor']); 
+export const requireEditor = requireRole(['admin', 'editor']);

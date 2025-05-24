@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -24,7 +24,7 @@ import {
   Select,
   MenuItem,
   Chip,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
@@ -32,11 +32,11 @@ import {
   Person as PersonIcon,
   Event as EventIcon,
   Assignment as AssignmentIcon,
-} from '@mui/icons-material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import nlLocale from 'date-fns/locale/nl';
+} from "@mui/icons-material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import nlLocale from "date-fns/locale/nl";
 
 interface Task {
   id: number;
@@ -44,7 +44,7 @@ interface Task {
   description: string;
   startDate: Date;
   endDate: Date;
-  status: 'pending' | 'in-progress' | 'completed';
+  status: "pending" | "in-progress" | "completed";
   assignedTo: string;
   dependencies: number[];
 }
@@ -62,22 +62,22 @@ const ProjectPlanning: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: 1,
-      name: 'Sloopwerk',
-      description: 'Verwijderen van bestaande constructies',
-      startDate: new Date('2024-01-15'),
-      endDate: new Date('2024-02-01'),
-      status: 'completed',
-      assignedTo: 'Mark de Boer',
+      name: "Sloopwerk",
+      description: "Verwijderen van bestaande constructies",
+      startDate: new Date("2024-01-15"),
+      endDate: new Date("2024-02-01"),
+      status: "completed",
+      assignedTo: "Mark de Boer",
       dependencies: [],
     },
     {
       id: 2,
-      name: 'Elektra en sanitair',
-      description: 'Installatie van nieuwe elektrische en sanitaire systemen',
-      startDate: new Date('2024-02-15'),
-      endDate: new Date('2024-03-15'),
-      status: 'in-progress',
-      assignedTo: 'Peter Jansen',
+      name: "Elektra en sanitair",
+      description: "Installatie van nieuwe elektrische en sanitaire systemen",
+      startDate: new Date("2024-02-15"),
+      endDate: new Date("2024-03-15"),
+      status: "in-progress",
+      assignedTo: "Peter Jansen",
       dependencies: [1],
     },
   ]);
@@ -85,15 +85,15 @@ const ProjectPlanning: React.FC = () => {
   const [resources, setResources] = useState<Resource[]>([
     {
       id: 1,
-      name: 'Peter Jansen',
-      role: 'Projectleider',
+      name: "Peter Jansen",
+      role: "Projectleider",
       availability: 100,
       currentTasks: [2],
     },
     {
       id: 2,
-      name: 'Mark de Boer',
-      role: 'Aannemer',
+      name: "Mark de Boer",
+      role: "Aannemer",
       availability: 75,
       currentTasks: [1],
     },
@@ -102,12 +102,12 @@ const ProjectPlanning: React.FC = () => {
   const [openTaskDialog, setOpenTaskDialog] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [newTask, setNewTask] = useState<Partial<Task>>({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     startDate: new Date(),
     endDate: new Date(),
-    status: 'pending',
-    assignedTo: '',
+    status: "pending",
+    assignedTo: "",
     dependencies: [],
   });
 
@@ -118,12 +118,12 @@ const ProjectPlanning: React.FC = () => {
     } else {
       setSelectedTask(null);
       setNewTask({
-        name: '',
-        description: '',
+        name: "",
+        description: "",
         startDate: new Date(),
         endDate: new Date(),
-        status: 'pending',
-        assignedTo: '',
+        status: "pending",
+        assignedTo: "",
         dependencies: [],
       });
     }
@@ -137,9 +137,11 @@ const ProjectPlanning: React.FC = () => {
 
   const handleSaveTask = () => {
     if (selectedTask) {
-      setTasks(tasks.map(task =>
-        task.id === selectedTask.id ? { ...task, ...newTask } : task
-      ));
+      setTasks(
+        tasks.map((task) =>
+          task.id === selectedTask.id ? { ...task, ...newTask } : task,
+        ),
+      );
     } else {
       setTasks([...tasks, { ...newTask, id: tasks.length + 1 } as Task]);
     }
@@ -147,25 +149,32 @@ const ProjectPlanning: React.FC = () => {
   };
 
   const handleDeleteTask = (taskId: number) => {
-    setTasks(tasks.filter(task => task.id !== taskId));
+    setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed':
-        return 'success';
-      case 'in-progress':
-        return 'primary';
-      case 'pending':
-        return 'warning';
+      case "completed":
+        return "success";
+      case "in-progress":
+        return "primary";
+      case "pending":
+        return "warning";
       default:
-        return 'default';
+        return "default";
     }
   };
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
         <Typography variant="h4">Project Planning</Typography>
         <Button
           variant="contained"
@@ -209,7 +218,7 @@ const ProjectPlanning: React.FC = () => {
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
                           {task.name}
                           <Chip
                             label={task.status}
@@ -223,7 +232,7 @@ const ProjectPlanning: React.FC = () => {
                         <>
                           {task.description}
                           <br />
-                          {`${task.startDate.toLocaleDateString('nl-NL')} - ${task.endDate.toLocaleDateString('nl-NL')}`}
+                          {`${task.startDate.toLocaleDateString("nl-NL")} - ${task.endDate.toLocaleDateString("nl-NL")}`}
                           <br />
                           {`Toegewezen aan: ${task.assignedTo}`}
                         </>
@@ -265,9 +274,14 @@ const ProjectPlanning: React.FC = () => {
         </Grid>
       </Grid>
 
-      <Dialog open={openTaskDialog} onClose={handleCloseTaskDialog} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openTaskDialog}
+        onClose={handleCloseTaskDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>
-          {selectedTask ? 'Taak Bewerken' : 'Nieuwe Taak'}
+          {selectedTask ? "Taak Bewerken" : "Nieuwe Taak"}
         </DialogTitle>
         <DialogContent>
           <Box sx={{ pt: 2 }}>
@@ -277,7 +291,9 @@ const ProjectPlanning: React.FC = () => {
                   fullWidth
                   label="Taaknaam"
                   value={newTask.name}
-                  onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, name: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -287,15 +303,22 @@ const ProjectPlanning: React.FC = () => {
                   multiline
                   rows={3}
                   value={newTask.description}
-                  onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, description: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={nlLocale}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={nlLocale}
+                >
                   <DatePicker
                     label="Start Datum"
                     value={newTask.startDate}
-                    onChange={(date) => setNewTask({ ...newTask, startDate: date })}
+                    onChange={(date) =>
+                      setNewTask({ ...newTask, startDate: date })
+                    }
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -305,11 +328,16 @@ const ProjectPlanning: React.FC = () => {
                 </LocalizationProvider>
               </Grid>
               <Grid item xs={12} md={6}>
-                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={nlLocale}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={nlLocale}
+                >
                   <DatePicker
                     label="Eind Datum"
                     value={newTask.endDate}
-                    onChange={(date) => setNewTask({ ...newTask, endDate: date })}
+                    onChange={(date) =>
+                      setNewTask({ ...newTask, endDate: date })
+                    }
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -324,7 +352,12 @@ const ProjectPlanning: React.FC = () => {
                   <Select
                     value={newTask.status}
                     label="Status"
-                    onChange={(e) => setNewTask({ ...newTask, status: e.target.value as Task['status'] })}
+                    onChange={(e) =>
+                      setNewTask({
+                        ...newTask,
+                        status: e.target.value as Task["status"],
+                      })
+                    }
                   >
                     <MenuItem value="pending">Pending</MenuItem>
                     <MenuItem value="in-progress">In Progress</MenuItem>
@@ -338,7 +371,9 @@ const ProjectPlanning: React.FC = () => {
                   <Select
                     value={newTask.assignedTo}
                     label="Toegewezen aan"
-                    onChange={(e) => setNewTask({ ...newTask, assignedTo: e.target.value })}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, assignedTo: e.target.value })
+                    }
                   >
                     {resources.map((resource) => (
                       <MenuItem key={resource.id} value={resource.name}>
@@ -354,7 +389,7 @@ const ProjectPlanning: React.FC = () => {
         <DialogActions>
           <Button onClick={handleCloseTaskDialog}>Annuleren</Button>
           <Button onClick={handleSaveTask} variant="contained">
-            {selectedTask ? 'Bijwerken' : 'Toevoegen'}
+            {selectedTask ? "Bijwerken" : "Toevoegen"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -362,4 +397,4 @@ const ProjectPlanning: React.FC = () => {
   );
 };
 
-export default ProjectPlanning; 
+export default ProjectPlanning;

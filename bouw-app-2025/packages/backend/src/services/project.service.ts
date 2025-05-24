@@ -1,6 +1,6 @@
-import { Project } from '@models/project.model';
-import { sharepointService } from '@config/azure.config';
-import { logger } from '@utils/logger';
+import { Project } from "@models/project.model";
+import { sharepointService } from "@config/azure.config";
+import { logger } from "@utils/logger";
 
 export const projectService = {
   async createProject(projectData: any) {
@@ -9,10 +9,12 @@ export const projectService = {
       const project = await Project.create(projectData);
 
       // Create SharePoint folder structure
-      const folderPath = await sharepointService.createProjectFolder(project._id.toString());
-      
+      const folderPath = await sharepointService.createProjectFolder(
+        project._id.toString(),
+      );
+
       // Create subfolders
-      const subfolders = ['Offertes', 'Planning', 'Foto\'s', 'Nacalculatie'];
+      const subfolders = ["Offertes", "Planning", "Foto's", "Nacalculatie"];
       for (const folder of subfolders) {
         await sharepointService.createProjectFolder(`${folderPath}/${folder}`);
       }
@@ -20,18 +22,23 @@ export const projectService = {
       logger.info(`Project created with SharePoint folder: ${folderPath}`);
       return project;
     } catch (error) {
-      logger.error('Failed to create project:', error);
+      logger.error("Failed to create project:", error);
       throw error;
     }
   },
 
-  async uploadProjectDocument(projectId: string, folder: string, fileName: string, content: Buffer) {
+  async uploadProjectDocument(
+    projectId: string,
+    folder: string,
+    fileName: string,
+    content: Buffer,
+  ) {
     try {
       const folderPath = `${sharepointConfig.documentLibrary}/${projectId}/${folder}`;
       await sharepointService.uploadDocument(folderPath, fileName, content);
       logger.info(`Document uploaded: ${folderPath}/${fileName}`);
     } catch (error) {
-      logger.error('Failed to upload document:', error);
+      logger.error("Failed to upload document:", error);
       throw error;
     }
   },
@@ -39,12 +46,14 @@ export const projectService = {
   async getProjectDocuments(projectId: string) {
     try {
       const response = await graphClient
-        .api(`/sites/${sharepointConfig.siteId}/drive/root:/${sharepointConfig.documentLibrary}/${projectId}:/children`)
+        .api(
+          `/sites/${sharepointConfig.siteId}/drive/root:/${sharepointConfig.documentLibrary}/${projectId}:/children`,
+        )
         .get();
       return response.value;
     } catch (error) {
-      logger.error('Failed to get project documents:', error);
+      logger.error("Failed to get project documents:", error);
       throw error;
     }
-  }
-}; 
+  },
+};

@@ -1,5 +1,5 @@
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { Navigate, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../store/hooks";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
@@ -20,4 +20,4 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-export default PrivateRoute; 
+export default PrivateRoute;

@@ -48,4 +48,4 @@ export const handleFirestoreError = (error: unknown): never => {
   }
 
   throw new FirestoreError('Unknown error occurred', 'unknown', 500);
-}; 
+};

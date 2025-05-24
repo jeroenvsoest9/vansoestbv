@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -22,8 +22,8 @@ import {
   LinearProgress,
   Alert,
   Tabs,
-  Tab
-} from '@mui/material';
+  Tab,
+} from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
@@ -31,10 +31,15 @@ import {
   School as SchoolIcon,
   Group as GroupIcon,
   Assessment as AssessmentIcon,
-  Book as BookIcon
-} from '@mui/icons-material';
-import { Agent, AgentType } from '../../types/agents';
-import { LearningSession, AgentCollaboration, AgentKnowledge, KnowledgeBase } from '../../types/agent-knowledge';
+  Book as BookIcon,
+} from "@mui/icons-material";
+import { Agent, AgentType } from "../../types/agents";
+import {
+  LearningSession,
+  AgentCollaboration,
+  AgentKnowledge,
+  KnowledgeBase,
+} from "../../types/agent-knowledge";
 
 interface AgentLearningProps {
   agents: Agent[];
@@ -47,58 +52,73 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
   agents,
   onSessionCreate,
   onCollaborationCreate,
-  onKnowledgeShare
+  onKnowledgeShare,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [sessions, setSessions] = useState<LearningSession[]>([]);
-  const [collaborations, setCollaborations] = useState<AgentCollaboration[]>([]);
+  const [collaborations, setCollaborations] = useState<AgentCollaboration[]>(
+    [],
+  );
   const [knowledgeBase, setKnowledgeBase] = useState<KnowledgeBase[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogType, setDialogType] = useState<'session' | 'collaboration' | 'knowledge'>('session');
-  const [selectedItem, setSelectedItem] = useState<LearningSession | AgentCollaboration | AgentKnowledge | null>(null);
+  const [dialogType, setDialogType] = useState<
+    "session" | "collaboration" | "knowledge"
+  >("session");
+  const [selectedItem, setSelectedItem] = useState<
+    LearningSession | AgentCollaboration | AgentKnowledge | null
+  >(null);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
-  const handleCreate = (type: 'session' | 'collaboration' | 'knowledge') => {
+  const handleCreate = (type: "session" | "collaboration" | "knowledge") => {
     setDialogType(type);
     setSelectedItem(null);
     setDialogOpen(true);
   };
 
-  const handleEdit = (item: LearningSession | AgentCollaboration | AgentKnowledge) => {
+  const handleEdit = (
+    item: LearningSession | AgentCollaboration | AgentKnowledge,
+  ) => {
     setSelectedItem(item);
     setDialogType(
-      'learningSessions' in item ? 'session' :
-      'collaborations' in item ? 'collaboration' : 'knowledge'
+      "learningSessions" in item
+        ? "session"
+        : "collaborations" in item
+          ? "collaboration"
+          : "knowledge",
     );
     setDialogOpen(true);
   };
 
   const handleDelete = (id: string) => {
     if (activeTab === 0) {
-      setSessions(sessions.filter(s => s.id !== id));
+      setSessions(sessions.filter((s) => s.id !== id));
     } else if (activeTab === 1) {
-      setCollaborations(collaborations.filter(c => c.id !== id));
+      setCollaborations(collaborations.filter((c) => c.id !== id));
     } else {
-      setKnowledgeBase(knowledgeBase.filter(k => k.id !== id));
+      setKnowledgeBase(knowledgeBase.filter((k) => k.id !== id));
     }
   };
 
   const handleSave = (data: any) => {
-    if (dialogType === 'session') {
+    if (dialogType === "session") {
       const session = data as LearningSession;
       if (selectedItem) {
-        setSessions(sessions.map(s => s.id === session.id ? session : s));
+        setSessions(sessions.map((s) => (s.id === session.id ? session : s)));
       } else {
         setSessions([...sessions, session]);
         onSessionCreate(session);
       }
-    } else if (dialogType === 'collaboration') {
+    } else if (dialogType === "collaboration") {
       const collaboration = data as AgentCollaboration;
       if (selectedItem) {
-        setCollaborations(collaborations.map(c => c.id === collaboration.id ? collaboration : c));
+        setCollaborations(
+          collaborations.map((c) =>
+            c.id === collaboration.id ? collaboration : c,
+          ),
+        );
       } else {
         setCollaborations([...collaborations, collaboration]);
         onCollaborationCreate(collaboration);
@@ -106,7 +126,9 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
     } else {
       const knowledge = data as AgentKnowledge;
       if (selectedItem) {
-        setKnowledgeBase(knowledgeBase.map(k => k.id === knowledge.id ? knowledge : k));
+        setKnowledgeBase(
+          knowledgeBase.map((k) => (k.id === knowledge.id ? knowledge : k)),
+        );
       } else {
         const newKnowledge: KnowledgeBase = {
           id: Date.now().toString(),
@@ -120,7 +142,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
           version: 1,
           tags: knowledge.tags,
           relatedKnowledge: [],
-          usage: { views: 0, shares: 0, applications: 0 }
+          usage: { views: 0, shares: 0, applications: 0 },
         };
         setKnowledgeBase([...knowledgeBase, newKnowledge]);
         onKnowledgeShare(knowledge);
@@ -131,17 +153,25 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
 
   return (
     <Box p={3}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">
-          Agent Learning & Collaboration
-        </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Typography variant="h4">Agent Learning & Collaboration</Typography>
         <Button
           startIcon={<AddIcon />}
           variant="contained"
-          onClick={() => handleCreate(
-            activeTab === 0 ? 'session' :
-            activeTab === 1 ? 'collaboration' : 'knowledge'
-          )}
+          onClick={() =>
+            handleCreate(
+              activeTab === 0
+                ? "session"
+                : activeTab === 1
+                  ? "collaboration"
+                  : "knowledge",
+            )
+          }
         >
           Create New
         </Button>
@@ -157,20 +187,21 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
 
       {activeTab === 0 && (
         <List>
-          {sessions.map(session => (
+          {sessions.map((session) => (
             <ListItem key={session.id}>
               <ListItemText
                 primary={session.title}
                 secondary={
                   <>
                     <Typography variant="body2" color="textSecondary">
-                      {new Date(session.date).toLocaleDateString()} - {session.duration} minutes
+                      {new Date(session.date).toLocaleDateString()} -{" "}
+                      {session.duration} minutes
                     </Typography>
                     <Typography variant="body2">
                       {session.description}
                     </Typography>
                     <Box display="flex" gap={1} mt={1}>
-                      {session.topics.map(topic => (
+                      {session.topics.map((topic) => (
                         <Chip key={topic} label={topic} size="small" />
                       ))}
                     </Box>
@@ -192,20 +223,21 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
 
       {activeTab === 1 && (
         <List>
-          {collaborations.map(collaboration => (
+          {collaborations.map((collaboration) => (
             <ListItem key={collaboration.id}>
               <ListItemText
                 primary={collaboration.purpose}
                 secondary={
                   <>
                     <Typography variant="body2" color="textSecondary">
-                      {new Date(collaboration.date).toLocaleDateString()} - {collaboration.duration} minutes
+                      {new Date(collaboration.date).toLocaleDateString()} -{" "}
+                      {collaboration.duration} minutes
                     </Typography>
                     <Typography variant="body2">
                       Type: {collaboration.type}
                     </Typography>
                     <Box display="flex" gap={1} mt={1}>
-                      {collaboration.outcomes.decisions.map(decision => (
+                      {collaboration.outcomes.decisions.map((decision) => (
                         <Chip key={decision} label={decision} size="small" />
                       ))}
                     </Box>
@@ -213,10 +245,16 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                 }
               />
               <ListItemSecondaryAction>
-                <IconButton edge="end" onClick={() => handleEdit(collaboration)}>
+                <IconButton
+                  edge="end"
+                  onClick={() => handleEdit(collaboration)}
+                >
                   <EditIcon />
                 </IconButton>
-                <IconButton edge="end" onClick={() => handleDelete(collaboration.id)}>
+                <IconButton
+                  edge="end"
+                  onClick={() => handleDelete(collaboration.id)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>
@@ -227,7 +265,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
 
       {activeTab === 2 && (
         <List>
-          {knowledgeBase.map(knowledge => (
+          {knowledgeBase.map((knowledge) => (
             <ListItem key={knowledge.id}>
               <ListItemText
                 primary={knowledge.title}
@@ -240,7 +278,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                       {knowledge.description}
                     </Typography>
                     <Box display="flex" gap={1} mt={1}>
-                      {knowledge.tags.map(tag => (
+                      {knowledge.tags.map((tag) => (
                         <Chip key={tag} label={tag} size="small" />
                       ))}
                     </Box>
@@ -251,7 +289,10 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                 <IconButton edge="end" onClick={() => handleEdit(knowledge)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton edge="end" onClick={() => handleDelete(knowledge.id)}>
+                <IconButton
+                  edge="end"
+                  onClick={() => handleDelete(knowledge.id)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>
@@ -267,14 +308,16 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
         fullWidth
       >
         <DialogTitle>
-          {selectedItem ? 'Edit' : 'Create'} {
-            dialogType === 'session' ? 'Learning Session' :
-            dialogType === 'collaboration' ? 'Collaboration' : 'Knowledge'
-          }
+          {selectedItem ? "Edit" : "Create"}{" "}
+          {dialogType === "session"
+            ? "Learning Session"
+            : dialogType === "collaboration"
+              ? "Collaboration"
+              : "Knowledge"}
         </DialogTitle>
         <DialogContent>
           <Box display="flex" flexDirection="column" gap={2} mt={2}>
-            {dialogType === 'session' && (
+            {dialogType === "session" && (
               <>
                 <TextField
                   label="Title"
@@ -294,7 +337,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                     label="Organizer"
                     defaultValue={selectedItem?.organizer}
                   >
-                    {agents.map(agent => (
+                    {agents.map((agent) => (
                       <MenuItem key={agent.id} value={agent.id}>
                         {agent.name}
                       </MenuItem>
@@ -312,13 +355,13 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                         {selected.map((value) => (
                           <Chip
                             key={value}
-                            label={agents.find(a => a.id === value)?.name}
+                            label={agents.find((a) => a.id === value)?.name}
                           />
                         ))}
                       </Box>
                     )}
                   >
-                    {agents.map(agent => (
+                    {agents.map((agent) => (
                       <MenuItem key={agent.id} value={agent.id}>
                         {agent.name}
                       </MenuItem>
@@ -328,7 +371,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
               </>
             )}
 
-            {dialogType === 'collaboration' && (
+            {dialogType === "collaboration" && (
               <>
                 <TextField
                   label="Purpose"
@@ -337,10 +380,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                 />
                 <FormControl fullWidth>
                   <InputLabel>Type</InputLabel>
-                  <Select
-                    label="Type"
-                    defaultValue={selectedItem?.type}
-                  >
+                  <Select label="Type" defaultValue={selectedItem?.type}>
                     <MenuItem value="meeting">Meeting</MenuItem>
                     <MenuItem value="workshop">Workshop</MenuItem>
                     <MenuItem value="review">Review</MenuItem>
@@ -358,13 +398,13 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                         {selected.map((value) => (
                           <Chip
                             key={value}
-                            label={agents.find(a => a.id === value)?.name}
+                            label={agents.find((a) => a.id === value)?.name}
                           />
                         ))}
                       </Box>
                     )}
                   >
-                    {agents.map(agent => (
+                    {agents.map((agent) => (
                       <MenuItem key={agent.id} value={agent.id}>
                         {agent.name}
                       </MenuItem>
@@ -374,7 +414,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
               </>
             )}
 
-            {dialogType === 'knowledge' && (
+            {dialogType === "knowledge" && (
               <>
                 <TextField
                   label="Title"
@@ -403,7 +443,7 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
                 <TextField
                   label="Tags"
                   fullWidth
-                  defaultValue={selectedItem?.tags?.join(', ')}
+                  defaultValue={selectedItem?.tags?.join(", ")}
                   helperText="Separate tags with commas"
                 />
               </>
@@ -411,17 +451,19 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
           <Button
             variant="contained"
-            onClick={() => handleSave({
-              id: selectedItem?.id || Date.now().toString(),
-              ...Object.fromEntries(
-                new FormData(document.querySelector('form') as HTMLFormElement)
-              )
-            })}
+            onClick={() =>
+              handleSave({
+                id: selectedItem?.id || Date.now().toString(),
+                ...Object.fromEntries(
+                  new FormData(
+                    document.querySelector("form") as HTMLFormElement,
+                  ),
+                ),
+              })
+            }
           >
             Save
           </Button>
@@ -431,4 +473,4 @@ const AgentLearning: React.FC<AgentLearningProps> = ({
   );
 };
 
-export default AgentLearning; 
+export default AgentLearning;

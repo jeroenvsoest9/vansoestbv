@@ -8,7 +8,7 @@ import {
   endBefore,
   getDocs,
   QueryConstraint,
-  DocumentSnapshot
+  DocumentSnapshot,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { FirestoreError } from './errors';
@@ -61,9 +61,9 @@ export const executeQuery = async <T>(
   const q = query(collection(db, path), ...constraints);
   const querySnapshot = await getDocs(q);
 
-  const data = querySnapshot.docs.map(doc => ({
+  const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
   })) as T[];
 
   const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
@@ -82,7 +82,7 @@ export const paginateQuery = async <T>(
 }> => {
   const paginatedOptions = {
     ...options,
-    limit: pageSize + 1
+    limit: pageSize + 1,
   };
 
   const { data, lastDoc } = await executeQuery<T>(path, paginatedOptions);
@@ -91,6 +91,6 @@ export const paginateQuery = async <T>(
   return {
     data: data.slice(0, pageSize),
     hasMore,
-    lastDoc: hasMore ? lastDoc : null
+    lastDoc: hasMore ? lastDoc : null,
   };
-}; 
+};

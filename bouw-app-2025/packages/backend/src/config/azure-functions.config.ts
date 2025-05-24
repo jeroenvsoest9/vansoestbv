@@ -1,5 +1,5 @@
-import { DefaultAzureCredential } from '@azure/identity';
-import { logger } from '@utils/logger';
+import { DefaultAzureCredential } from "@azure/identity";
+import { logger } from "@utils/logger";
 
 // Initialize Azure Functions client
 const credential = new DefaultAzureCredential();
@@ -11,17 +11,17 @@ export const azureFunctionsService = {
       // Create a timer trigger function
       const functionApp = await this.createFunctionApp({
         name: `scheduled-${taskData.name}`,
-        runtime: 'node',
+        runtime: "node",
         trigger: {
-          type: 'timer',
-          schedule: taskData.schedule
+          type: "timer",
+          schedule: taskData.schedule,
         },
-        code: taskData.code
+        code: taskData.code,
       });
 
       return functionApp;
     } catch (error) {
-      logger.error('Failed to schedule task:', error);
+      logger.error("Failed to schedule task:", error);
       throw error;
     }
   },
@@ -32,18 +32,18 @@ export const azureFunctionsService = {
       // Create an event trigger function
       const functionApp = await this.createFunctionApp({
         name: `event-${eventData.name}`,
-        runtime: 'node',
+        runtime: "node",
         trigger: {
-          type: 'event',
+          type: "event",
           eventType: eventData.eventType,
-          source: eventData.source
+          source: eventData.source,
         },
-        code: eventData.code
+        code: eventData.code,
       });
 
       return functionApp;
     } catch (error) {
-      logger.error('Failed to create event trigger:', error);
+      logger.error("Failed to create event trigger:", error);
       throw error;
     }
   },
@@ -53,18 +53,18 @@ export const azureFunctionsService = {
     try {
       const functionApp = await this.createFunctionApp({
         name: `document-processor-${processorData.name}`,
-        runtime: 'node',
+        runtime: "node",
         trigger: {
-          type: 'blob',
+          type: "blob",
           path: processorData.inputPath,
-          connection: processorData.storageConnection
+          connection: processorData.storageConnection,
         },
-        code: processorData.code
+        code: processorData.code,
       });
 
       return functionApp;
     } catch (error) {
-      logger.error('Failed to create document processor:', error);
+      logger.error("Failed to create document processor:", error);
       throw error;
     }
   },
@@ -74,35 +74,35 @@ export const azureFunctionsService = {
     try {
       const functionApp = await this.createFunctionApp({
         name: `notification-${notificationData.name}`,
-        runtime: 'node',
+        runtime: "node",
         trigger: {
-          type: 'queue',
+          type: "queue",
           queueName: notificationData.queueName,
-          connection: notificationData.storageConnection
+          connection: notificationData.storageConnection,
         },
-        code: notificationData.code
+        code: notificationData.code,
       });
 
       return functionApp;
     } catch (error) {
-      logger.error('Failed to create notification function:', error);
+      logger.error("Failed to create notification function:", error);
       throw error;
     }
   },
 
   // Helper function to create function app
-  private async createFunctionApp(config: any) {
+  async createFunctionApp(config: any) {
     try {
       // Implementation would use Azure SDK to create the function app
       // This is a placeholder for the actual implementation
       return {
         id: `function-${config.name}`,
         name: config.name,
-        status: 'created'
+        status: "created",
       };
     } catch (error) {
-      logger.error('Failed to create function app:', error);
+      logger.error("Failed to create function app:", error);
       throw error;
     }
-  }
-}; 
+  },
+};

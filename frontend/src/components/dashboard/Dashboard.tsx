@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   AppBar,
   Box,
@@ -20,8 +20,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  LinearProgress
-} from '@mui/material';
+  LinearProgress,
+} from "@mui/material";
 import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
@@ -38,16 +38,16 @@ import {
   Warning,
   MoreVert,
   CheckCircle,
-  Error
-} from '@mui/icons-material';
-import { logout } from '../../features/auth/authSlice';
+  Error,
+} from "@mui/icons-material";
+import { logout } from "../../features/auth/authSlice";
 
 const drawerWidth = 240;
 
 const Dashboard: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -57,15 +57,15 @@ const Dashboard: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate("/login");
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'Nieuws', icon: <ArticleIcon />, path: '/news' },
-    { text: 'Evenementen', icon: <EventIcon />, path: '/events' },
-    { text: "Foto's", icon: <PhotoIcon />, path: '/photos' },
-    { text: 'Berichten', icon: <MessageIcon />, path: '/messages' },
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+    { text: "Nieuws", icon: <ArticleIcon />, path: "/news" },
+    { text: "Evenementen", icon: <EventIcon />, path: "/events" },
+    { text: "Foto's", icon: <PhotoIcon />, path: "/photos" },
+    { text: "Berichten", icon: <MessageIcon />, path: "/messages" },
   ];
 
   const drawer = (
@@ -73,17 +73,15 @@ const Dashboard: React.FC = () => {
       <Toolbar />
       <List>
         {menuItems.map((item) => (
-          <ListItem
-            button
-            key={item.text}
-            onClick={() => navigate(item.path)}
-          >
+          <ListItem button key={item.text} onClick={() => navigate(item.path)}>
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>
         ))}
         <ListItem button onClick={handleLogout}>
-          <ListItemIcon><LogoutIcon /></ListItemIcon>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
           <ListItemText primary="Uitloggen" />
         </ListItem>
       </List>
@@ -93,25 +91,55 @@ const Dashboard: React.FC = () => {
   // Example data - in real app this would come from your state management
   const metrics = {
     activeProjects: 12,
-    totalRevenue: '€ 1.250.000',
+    totalRevenue: "€ 1.250.000",
     pendingInvoices: 8,
     teamMembers: 15,
   };
 
   const recentProjects = [
-    { id: 1, name: 'Renovatie Badkamer De Vries', status: 'In Uitvoering', progress: 65 },
-    { id: 2, name: 'Dakkapel Einsteinlaan', status: 'In Uitvoering', progress: 30 },
-    { id: 3, name: 'Aanbouw Keuken Jansen', status: 'In Uitvoering', progress: 85 },
+    {
+      id: 1,
+      name: "Renovatie Badkamer De Vries",
+      status: "In Uitvoering",
+      progress: 65,
+    },
+    {
+      id: 2,
+      name: "Dakkapel Einsteinlaan",
+      status: "In Uitvoering",
+      progress: 30,
+    },
+    {
+      id: 3,
+      name: "Aanbouw Keuken Jansen",
+      status: "In Uitvoering",
+      progress: 85,
+    },
   ];
 
   const upcomingTasks = [
-    { id: 1, title: 'Materiaal bestellen voor De Vries', dueDate: 'Vandaag', priority: 'high' },
-    { id: 2, title: 'Vergunning aanvragen Einsteinlaan', dueDate: 'Morgen', priority: 'medium' },
-    { id: 3, title: 'Factuur versturen Jansen', dueDate: 'Over 2 dagen', priority: 'low' },
+    {
+      id: 1,
+      title: "Materiaal bestellen voor De Vries",
+      dueDate: "Vandaag",
+      priority: "high",
+    },
+    {
+      id: 2,
+      title: "Vergunning aanvragen Einsteinlaan",
+      dueDate: "Morgen",
+      priority: "medium",
+    },
+    {
+      id: 3,
+      title: "Factuur versturen Jansen",
+      dueDate: "Over 2 dagen",
+      priority: "low",
+    },
   ];
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -126,7 +154,7 @@ const Dashboard: React.FC = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -146,8 +174,11 @@ const Dashboard: React.FC = () => {
             onClose={handleDrawerToggle}
             ModalProps={{ keepMounted: true }}
             sx={{
-              display: { xs: 'block', sm: 'none' },
-              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
             }}
           >
             {drawer}
@@ -156,8 +187,11 @@ const Dashboard: React.FC = () => {
           <Drawer
             variant="permanent"
             sx={{
-              display: { xs: 'none', sm: 'block' },
-              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+              display: { xs: "none", sm: "block" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
             }}
             open
           >
@@ -171,7 +205,7 @@ const Dashboard: React.FC = () => {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          mt: '64px'
+          mt: "64px",
         }}
       >
         <Toolbar />
@@ -185,11 +219,11 @@ const Dashboard: React.FC = () => {
             <Paper
               sx={{
                 p: 2,
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 height: 140,
-                bgcolor: 'primary.main',
-                color: 'white',
+                bgcolor: "primary.main",
+                color: "white",
               }}
             >
               <Typography variant="h6" gutterBottom>
@@ -199,8 +233,8 @@ const Dashboard: React.FC = () => {
                 {metrics.activeProjects}
               </Typography>
               <Typography variant="body2" sx={{ mt: 1 }}>
-                <TrendingUp sx={{ mr: 1, verticalAlign: 'middle' }} />
-                3 nieuwe deze maand
+                <TrendingUp sx={{ mr: 1, verticalAlign: "middle" }} />3 nieuwe
+                deze maand
               </Typography>
             </Paper>
           </Grid>
@@ -208,11 +242,11 @@ const Dashboard: React.FC = () => {
             <Paper
               sx={{
                 p: 2,
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 height: 140,
-                bgcolor: 'secondary.main',
-                color: 'white',
+                bgcolor: "secondary.main",
+                color: "white",
               }}
             >
               <Typography variant="h6" gutterBottom>
@@ -222,7 +256,7 @@ const Dashboard: React.FC = () => {
                 {metrics.totalRevenue}
               </Typography>
               <Typography variant="body2" sx={{ mt: 1 }}>
-                <TrendingUp sx={{ mr: 1, verticalAlign: 'middle' }} />
+                <TrendingUp sx={{ mr: 1, verticalAlign: "middle" }} />
                 12% groei t.o.v. vorige maand
               </Typography>
             </Paper>
@@ -231,11 +265,11 @@ const Dashboard: React.FC = () => {
             <Paper
               sx={{
                 p: 2,
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 height: 140,
-                bgcolor: 'success.main',
-                color: 'white',
+                bgcolor: "success.main",
+                color: "white",
               }}
             >
               <Typography variant="h6" gutterBottom>
@@ -245,8 +279,8 @@ const Dashboard: React.FC = () => {
                 {metrics.pendingInvoices}
               </Typography>
               <Typography variant="body2" sx={{ mt: 1 }}>
-                <AttachMoney sx={{ mr: 1, verticalAlign: 'middle' }} />
-                € 45.000 totaal
+                <AttachMoney sx={{ mr: 1, verticalAlign: "middle" }} />€ 45.000
+                totaal
               </Typography>
             </Paper>
           </Grid>
@@ -254,11 +288,11 @@ const Dashboard: React.FC = () => {
             <Paper
               sx={{
                 p: 2,
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 height: 140,
-                bgcolor: 'info.main',
-                color: 'white',
+                bgcolor: "info.main",
+                color: "white",
               }}
             >
               <Typography variant="h6" gutterBottom>
@@ -268,8 +302,8 @@ const Dashboard: React.FC = () => {
                 {metrics.teamMembers}
               </Typography>
               <Typography variant="body2" sx={{ mt: 1 }}>
-                <People sx={{ mr: 1, verticalAlign: 'middle' }} />
-                2 onderaannemers actief
+                <People sx={{ mr: 1, verticalAlign: "middle" }} />2
+                onderaannemers actief
               </Typography>
             </Paper>
           </Grid>
@@ -306,7 +340,11 @@ const Dashboard: React.FC = () => {
                               value={project.progress}
                               sx={{ mt: 1 }}
                             />
-                            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{ mt: 0.5 }}
+                            >
                               {project.progress}% voltooid
                             </Typography>
                           </Box>
@@ -333,9 +371,9 @@ const Dashboard: React.FC = () => {
                   {upcomingTasks.map((task) => (
                     <ListItem key={task.id} divider>
                       <ListItemIcon>
-                        {task.priority === 'high' ? (
+                        {task.priority === "high" ? (
                           <Error color="error" />
-                        ) : task.priority === 'medium' ? (
+                        ) : task.priority === "medium" ? (
                           <Warning color="warning" />
                         ) : (
                           <CheckCircle color="success" />
@@ -361,4 +399,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

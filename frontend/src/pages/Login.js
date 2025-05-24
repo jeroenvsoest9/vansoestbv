@@ -1,8 +1,8 @@
-import React from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import React from "react";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   Container,
   Box,
@@ -11,17 +11,17 @@ import {
   Button,
   Link,
   Alert,
-  Paper
-} from '@mui/material';
-import { login } from '../store/slices/authSlice';
+  Paper,
+} from "@mui/material";
+import { login } from "../store/slices/authSlice";
 
 const validationSchema = Yup.object({
   email: Yup.string()
-    .email('Voer een geldig e-mailadres in')
-    .required('E-mailadres is verplicht'),
+    .email("Voer een geldig e-mailadres in")
+    .required("E-mailadres is verplicht"),
   password: Yup.string()
-    .min(8, 'Wachtwoord moet minimaal 8 karakters bevatten')
-    .required('Wachtwoord is verplicht')
+    .min(8, "Wachtwoord moet minimaal 8 karakters bevatten")
+    .required("Wachtwoord is verplicht"),
 });
 
 const Login = () => {
@@ -31,37 +31,37 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: ''
+      email: "",
+      password: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       const resultAction = await dispatch(login(values));
       if (!resultAction.error) {
-        navigate('/');
+        navigate("/");
       }
-    }
+    },
   });
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center'
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Paper
           elevation={3}
           sx={{
             p: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%'
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
           }}
         >
           <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
@@ -69,12 +69,16 @@ const Login = () => {
           </Typography>
 
           {error && (
-            <Alert severity="error" sx={{ mb: 2, width: '100%' }}>
+            <Alert severity="error" sx={{ mb: 2, width: "100%" }}>
               {error}
             </Alert>
           )}
 
-          <Box component="form" onSubmit={formik.handleSubmit} sx={{ width: '100%' }}>
+          <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
+            sx={{ width: "100%" }}
+          >
             <TextField
               margin="normal"
               fullWidth
@@ -110,9 +114,9 @@ const Login = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={isLoading}
             >
-              {isLoading ? 'Bezig met inloggen...' : 'Inloggen'}
+              {isLoading ? "Bezig met inloggen..." : "Inloggen"}
             </Button>
-            <Box sx={{ textAlign: 'center' }}>
+            <Box sx={{ textAlign: "center" }}>
               <Link component={RouterLink} to="/register" variant="body2">
                 Nog geen account? Registreer hier
               </Link>
@@ -124,4 +128,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

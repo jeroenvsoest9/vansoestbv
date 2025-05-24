@@ -41,10 +41,7 @@ export const measureOperation = async <T>(
   }
 };
 
-export const measureFunction = <T extends (...args: any[]) => any>(
-  name: string,
-  fn: T
-): T => {
+export const measureFunction = <T extends (...args: any[]) => any>(name: string, fn: T): T => {
   return (async (...args: Parameters<T>): Promise<ReturnType<T>> => {
     const trace = createTrace(name);
     trace.start();
@@ -66,19 +63,11 @@ export const addCustomAttribute = (
   value: string | number | boolean
 ): void => {
   if (!trace) {
-    throw new FirestoreError(
-      'Trace is required',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Trace is required', 'invalid-argument', 400);
   }
 
   if (!name || typeof name !== 'string') {
-    throw new FirestoreError(
-      'Attribute name must be a non-empty string',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Attribute name must be a non-empty string', 'invalid-argument', 400);
   }
 
   if (value === undefined || value === null) {
@@ -104,15 +93,15 @@ export const measureNetworkPerformance = async (
     const startTime = performance.now();
     const response = await fetch(url, { method });
     const endTime = performance.now();
-    
+
     trace.putAttribute('status', response.status.toString());
     trace.putAttribute('content_type', response.headers.get('content-type') || '');
     trace.putAttribute('content_length', response.headers.get('content-length') || '0');
-    
+
     trace.stop();
     return endTime - startTime;
   } catch (error) {
     trace.stop();
     throw error;
   }
-}; 
+};

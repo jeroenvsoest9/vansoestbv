@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -20,28 +20,30 @@ import {
   InputAdornment,
   Chip,
   Alert,
-  CircularProgress
-} from '@mui/material';
+  CircularProgress,
+} from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Search as SearchIcon
-} from '@mui/icons-material';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+  Search as SearchIcon,
+} from "@mui/icons-material";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   getProjects,
   deleteProject,
-  clearError
-} from '../../store/slices/projectsSlice';
-import { Project } from '../../services/api/projects';
+  clearError,
+} from "../../store/slices/projectsSlice";
+import { Project } from "../../services/api/projects";
 
 const ProjectList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { projects, loading, error } = useAppSelector((state) => state.projects);
+  const { projects, loading, error } = useAppSelector(
+    (state) => state.projects,
+  );
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
@@ -78,31 +80,31 @@ const ProjectList: React.FC = () => {
     setProjectToDelete(null);
   };
 
-  const getStatusColor = (status: Project['status']) => {
+  const getStatusColor = (status: Project["status"]) => {
     switch (status) {
-      case 'In Planning':
-        return 'info';
-      case 'In Uitvoering':
-        return 'primary';
-      case 'Op Pause':
-        return 'warning';
-      case 'Voltooid':
-        return 'success';
+      case "In Planning":
+        return "info";
+      case "In Uitvoering":
+        return "primary";
+      case "Op Pause":
+        return "warning";
+      case "Voltooid":
+        return "success";
       default:
-        return 'default';
+        return "default";
     }
   };
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
         <Typography variant="h4" component="h1">
           Projects
         </Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          onClick={() => navigate('/projects/new')}
+          onClick={() => navigate("/projects/new")}
         >
           New Project
         </Button>
@@ -126,7 +128,7 @@ const ProjectList: React.FC = () => {
             <InputAdornment position="start">
               <SearchIcon />
             </InputAdornment>
-          )
+          ),
         }}
       />
 
@@ -170,8 +172,12 @@ const ProjectList: React.FC = () => {
                       size="small"
                     />
                   </TableCell>
-                  <TableCell>{new Date(project.startDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{new Date(project.endDate).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {new Date(project.startDate).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(project.endDate).toLocaleDateString()}
+                  </TableCell>
                   <TableCell>€{project.budget.toLocaleString()}</TableCell>
                   <TableCell>
                     <IconButton
@@ -194,10 +200,7 @@ const ProjectList: React.FC = () => {
         </Table>
       </TableContainer>
 
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={handleDeleteCancel}
-      >
+      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
         <DialogTitle>Delete Project</DialogTitle>
         <DialogContent>
           Are you sure you want to delete the project "{projectToDelete?.name}"?
@@ -218,4 +221,4 @@ const ProjectList: React.FC = () => {
   );
 };
 
-export default ProjectList; 
+export default ProjectList;

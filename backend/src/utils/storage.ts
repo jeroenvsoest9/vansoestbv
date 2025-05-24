@@ -12,11 +12,7 @@ export const uploadFile = async (
     await uploadBytes(storageRef, file, { customMetadata: metadata });
     return await getDownloadURL(storageRef);
   } catch (error) {
-    throw new FirestoreError(
-      'Failed to upload file',
-      'storage/upload-failed',
-      500
-    );
+    throw new FirestoreError('Failed to upload file', 'storage/upload-failed', 500);
   }
 };
 
@@ -25,39 +21,23 @@ export const deleteFile = async (path: string): Promise<void> => {
     const storageRef = ref(storage, path);
     await deleteObject(storageRef);
   } catch (error) {
-    throw new FirestoreError(
-      'Failed to delete file',
-      'storage/delete-failed',
-      500
-    );
+    throw new FirestoreError('Failed to delete file', 'storage/delete-failed', 500);
   }
 };
 
 export const validateFilePath = (path: string): void => {
   if (!path || typeof path !== 'string') {
-    throw new FirestoreError(
-      'File path must be a non-empty string',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('File path must be a non-empty string', 'invalid-argument', 400);
   }
 
   if (path.startsWith('/') || path.endsWith('/')) {
-    throw new FirestoreError(
-      'File path cannot start or end with a slash',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('File path cannot start or end with a slash', 'invalid-argument', 400);
   }
 };
 
 export const validateFileType = (file: File | Blob, allowedTypes: string[]): void => {
   if (!file) {
-    throw new FirestoreError(
-      'File is required',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('File is required', 'invalid-argument', 400);
   }
 
   const type = file instanceof File ? file.type : file.type;
@@ -72,11 +52,7 @@ export const validateFileType = (file: File | Blob, allowedTypes: string[]): voi
 
 export const validateFileSize = (file: File | Blob, maxSize: number): void => {
   if (!file) {
-    throw new FirestoreError(
-      'File is required',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('File is required', 'invalid-argument', 400);
   }
 
   if (file.size > maxSize) {
@@ -86,4 +62,4 @@ export const validateFileSize = (file: File | Blob, maxSize: number): void => {
       400
     );
   }
-}; 
+};

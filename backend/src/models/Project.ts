@@ -22,19 +22,23 @@ export interface Project {
   archived?: boolean;
 }
 
-function validateProjectData(data: Partial<Project>): Omit<Project, 'id' | 'createdAt' | 'updatedAt'> {
+function validateProjectData(
+  data: Partial<Project>
+): Omit<Project, 'id' | 'createdAt' | 'updatedAt'> {
   if (!data || typeof data !== 'object') throw new Error('Project data is required.');
   if (!data.client || typeof data.client !== 'object') throw new Error('Client info is required.');
-  if (!data.client.name || !data.client.email || !data.client.phone) throw new Error('Client name, email, and phone are required.');
+  if (!data.client.name || !data.client.email || !data.client.phone)
+    throw new Error('Client name, email, and phone are required.');
   if (!data.type || typeof data.type !== 'string') throw new Error('Project type is required.');
-  if (!['aanvraag', 'bezig', 'afgerond', 'geannuleerd'].includes(data.status!)) throw new Error('Invalid status.');
+  if (!['aanvraag', 'bezig', 'afgerond', 'geannuleerd'].includes(data.status!))
+    throw new Error('Invalid status.');
   return {
     client: data.client,
     type: data.type,
     status: data.status!,
     answers: data.answers || {},
     documents: data.documents || {},
-    archived: data.archived || false
+    archived: data.archived || false,
   };
 }
 
@@ -49,7 +53,7 @@ export class ProjectModel {
       id: ref.id,
       ...validData,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
     await ref.set(project);
     return project;
@@ -65,7 +69,12 @@ export class ProjectModel {
   async update(id: string, data: Partial<Project>): Promise<Project | null> {
     // Alleen toegestane velden updaten
     const allowedFields: (keyof Project)[] = [
-      'client', 'type', 'status', 'answers', 'documents', 'archived'
+      'client',
+      'type',
+      'status',
+      'answers',
+      'documents',
+      'archived',
     ];
     const updateData: Partial<Project> = {};
     for (const key of allowedFields) {

@@ -44,4 +44,4 @@ export const validateFilter = (field: string, operator: string, value: any): voi
   if (value === undefined || value === null) {
     throw new Error('Filter value cannot be undefined or null');
   }
-}; 
+};

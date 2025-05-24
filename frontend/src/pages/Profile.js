@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   Container,
   Box,
@@ -15,33 +15,30 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
-} from '@mui/material';
-import { updateProfile, changePassword } from '../store/slices/authSlice';
+  DialogActions,
+} from "@mui/material";
+import { updateProfile, changePassword } from "../store/slices/authSlice";
 
 const profileValidationSchema = Yup.object({
-  firstName: Yup.string()
-    .required('Voornaam is verplicht'),
-  lastName: Yup.string()
-    .required('Achternaam is verplicht'),
+  firstName: Yup.string().required("Voornaam is verplicht"),
+  lastName: Yup.string().required("Achternaam is verplicht"),
   email: Yup.string()
-    .email('Voer een geldig e-mailadres in')
-    .required('E-mailadres is verplicht')
+    .email("Voer een geldig e-mailadres in")
+    .required("E-mailadres is verplicht"),
 });
 
 const passwordValidationSchema = Yup.object({
-  currentPassword: Yup.string()
-    .required('Huidig wachtwoord is verplicht'),
+  currentPassword: Yup.string().required("Huidig wachtwoord is verplicht"),
   newPassword: Yup.string()
-    .min(8, 'Wachtwoord moet minimaal 8 karakters bevatten')
+    .min(8, "Wachtwoord moet minimaal 8 karakters bevatten")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      'Wachtwoord moet minimaal één hoofdletter, één kleine letter, één cijfer en één speciaal teken bevatten'
+      "Wachtwoord moet minimaal één hoofdletter, één kleine letter, één cijfer en één speciaal teken bevatten",
     )
-    .required('Nieuw wachtwoord is verplicht'),
+    .required("Nieuw wachtwoord is verplicht"),
   confirmNewPassword: Yup.string()
-    .oneOf([Yup.ref('newPassword'), null], 'Wachtwoorden komen niet overeen')
-    .required('Bevestig je nieuwe wachtwoord')
+    .oneOf([Yup.ref("newPassword"), null], "Wachtwoorden komen niet overeen")
+    .required("Bevestig je nieuwe wachtwoord"),
 });
 
 const Profile = () => {
@@ -53,9 +50,9 @@ const Profile = () => {
 
   const profileFormik = useFormik({
     initialValues: {
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
-      email: user?.email || ''
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      email: user?.email || "",
     },
     validationSchema: profileValidationSchema,
     onSubmit: async (values) => {
@@ -65,27 +62,29 @@ const Profile = () => {
         setTimeout(() => setProfileUpdateSuccess(false), 3000);
       }
     },
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   const passwordFormik = useFormik({
     initialValues: {
-      currentPassword: '',
-      newPassword: '',
-      confirmNewPassword: ''
+      currentPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
     },
     validationSchema: passwordValidationSchema,
     onSubmit: async (values) => {
-      const resultAction = await dispatch(changePassword({
-        currentPassword: values.currentPassword,
-        newPassword: values.newPassword
-      }));
+      const resultAction = await dispatch(
+        changePassword({
+          currentPassword: values.currentPassword,
+          newPassword: values.newPassword,
+        }),
+      );
       if (!resultAction.error) {
         setPasswordChangeSuccess(true);
         setShowPasswordDialog(false);
         passwordFormik.resetForm();
       }
-    }
+    },
   });
 
   const handleClosePasswordDialog = () => {
@@ -129,8 +128,14 @@ const Profile = () => {
                 value={profileFormik.values.firstName}
                 onChange={profileFormik.handleChange}
                 onBlur={profileFormik.handleBlur}
-                error={profileFormik.touched.firstName && Boolean(profileFormik.errors.firstName)}
-                helperText={profileFormik.touched.firstName && profileFormik.errors.firstName}
+                error={
+                  profileFormik.touched.firstName &&
+                  Boolean(profileFormik.errors.firstName)
+                }
+                helperText={
+                  profileFormik.touched.firstName &&
+                  profileFormik.errors.firstName
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -142,8 +147,14 @@ const Profile = () => {
                 value={profileFormik.values.lastName}
                 onChange={profileFormik.handleChange}
                 onBlur={profileFormik.handleBlur}
-                error={profileFormik.touched.lastName && Boolean(profileFormik.errors.lastName)}
-                helperText={profileFormik.touched.lastName && profileFormik.errors.lastName}
+                error={
+                  profileFormik.touched.lastName &&
+                  Boolean(profileFormik.errors.lastName)
+                }
+                helperText={
+                  profileFormik.touched.lastName &&
+                  profileFormik.errors.lastName
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -155,19 +166,20 @@ const Profile = () => {
                 value={profileFormik.values.email}
                 onChange={profileFormik.handleChange}
                 onBlur={profileFormik.handleBlur}
-                error={profileFormik.touched.email && Boolean(profileFormik.errors.email)}
-                helperText={profileFormik.touched.email && profileFormik.errors.email}
+                error={
+                  profileFormik.touched.email &&
+                  Boolean(profileFormik.errors.email)
+                }
+                helperText={
+                  profileFormik.touched.email && profileFormik.errors.email
+                }
               />
             </Grid>
           </Grid>
 
-          <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Bezig met opslaan...' : 'Wijzigingen opslaan'}
+          <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
+            <Button type="submit" variant="contained" disabled={isLoading}>
+              {isLoading ? "Bezig met opslaan..." : "Wijzigingen opslaan"}
             </Button>
             <Button
               variant="outlined"
@@ -181,7 +193,11 @@ const Profile = () => {
         <Dialog open={showPasswordDialog} onClose={handleClosePasswordDialog}>
           <DialogTitle>Wachtwoord wijzigen</DialogTitle>
           <DialogContent>
-            <Box component="form" onSubmit={passwordFormik.handleSubmit} sx={{ pt: 2 }}>
+            <Box
+              component="form"
+              onSubmit={passwordFormik.handleSubmit}
+              sx={{ pt: 2 }}
+            >
               <TextField
                 fullWidth
                 margin="normal"
@@ -192,8 +208,14 @@ const Profile = () => {
                 value={passwordFormik.values.currentPassword}
                 onChange={passwordFormik.handleChange}
                 onBlur={passwordFormik.handleBlur}
-                error={passwordFormik.touched.currentPassword && Boolean(passwordFormik.errors.currentPassword)}
-                helperText={passwordFormik.touched.currentPassword && passwordFormik.errors.currentPassword}
+                error={
+                  passwordFormik.touched.currentPassword &&
+                  Boolean(passwordFormik.errors.currentPassword)
+                }
+                helperText={
+                  passwordFormik.touched.currentPassword &&
+                  passwordFormik.errors.currentPassword
+                }
               />
               <TextField
                 fullWidth
@@ -205,8 +227,14 @@ const Profile = () => {
                 value={passwordFormik.values.newPassword}
                 onChange={passwordFormik.handleChange}
                 onBlur={passwordFormik.handleBlur}
-                error={passwordFormik.touched.newPassword && Boolean(passwordFormik.errors.newPassword)}
-                helperText={passwordFormik.touched.newPassword && passwordFormik.errors.newPassword}
+                error={
+                  passwordFormik.touched.newPassword &&
+                  Boolean(passwordFormik.errors.newPassword)
+                }
+                helperText={
+                  passwordFormik.touched.newPassword &&
+                  passwordFormik.errors.newPassword
+                }
               />
               <TextField
                 fullWidth
@@ -218,18 +246,21 @@ const Profile = () => {
                 value={passwordFormik.values.confirmNewPassword}
                 onChange={passwordFormik.handleChange}
                 onBlur={passwordFormik.handleBlur}
-                error={passwordFormik.touched.confirmNewPassword && Boolean(passwordFormik.errors.confirmNewPassword)}
-                helperText={passwordFormik.touched.confirmNewPassword && passwordFormik.errors.confirmNewPassword}
+                error={
+                  passwordFormik.touched.confirmNewPassword &&
+                  Boolean(passwordFormik.errors.confirmNewPassword)
+                }
+                helperText={
+                  passwordFormik.touched.confirmNewPassword &&
+                  passwordFormik.errors.confirmNewPassword
+                }
               />
             </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClosePasswordDialog}>Annuleren</Button>
-            <Button 
-              onClick={passwordFormik.handleSubmit}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Bezig met wijzigen...' : 'Wachtwoord wijzigen'}
+            <Button onClick={passwordFormik.handleSubmit} disabled={isLoading}>
+              {isLoading ? "Bezig met wijzigen..." : "Wachtwoord wijzigen"}
             </Button>
           </DialogActions>
         </Dialog>
@@ -238,4 +269,4 @@ const Profile = () => {
   );
 };
 
-export default Profile; 
+export default Profile;

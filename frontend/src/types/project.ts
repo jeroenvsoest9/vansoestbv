@@ -3,7 +3,7 @@ export interface TeamMember {
   name: string;
   role: string;
   email: string;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
 }
 
 export interface Document {
@@ -17,7 +17,7 @@ export interface Document {
 export interface Task {
   title: string;
   description: string;
-  status: 'todo' | 'in_progress' | 'completed';
+  status: "todo" | "in_progress" | "completed";
   assignedTo: string;
   dueDate: string;
   completedAt?: string;
@@ -28,7 +28,7 @@ export interface TimelineEvent {
   type: string;
   description: string;
   date: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: "pending" | "in_progress" | "completed";
 }
 
 export interface Project {
@@ -36,9 +36,14 @@ export interface Project {
   name: string;
   code: string;
   description: string;
-  type: 'construction' | 'renovation' | 'maintenance' | 'design' | 'consultation';
-  status: 'planning' | 'active' | 'on-hold' | 'completed' | 'cancelled';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
+  type:
+    | "construction"
+    | "renovation"
+    | "maintenance"
+    | "design"
+    | "consultation";
+  status: "planning" | "active" | "on-hold" | "completed" | "cancelled";
+  priority: "low" | "medium" | "high" | "urgent";
   progress: number;
   plannedStartDate?: string;
   plannedEndDate?: string;
@@ -195,8 +200,8 @@ export interface Project {
 export interface ProjectFormData {
   name: string;
   client: string;
-  type: 'new' | 'renovation' | 'maintenance';
-  status: 'planning' | 'in_progress' | 'completed' | 'on_hold';
+  type: "new" | "renovation" | "maintenance";
+  status: "planning" | "in_progress" | "completed" | "on_hold";
   startDate: string;
   endDate?: string;
   budget: number;
@@ -218,7 +223,7 @@ export interface TeamMemberFormData {
 export interface TaskFormData {
   title: string;
   description: string;
-  status: 'todo' | 'in_progress' | 'completed';
+  status: "todo" | "in_progress" | "completed";
   assignedTo: string;
   dueDate: string;
 }
@@ -227,16 +232,16 @@ export interface TimelineEventFormData {
   title: string;
   description: string;
   date: string;
-  type: 'milestone' | 'event' | 'note';
+  type: "milestone" | "event" | "note";
 }
 
 export interface Risk {
   _id: string;
   title: string;
   description: string;
-  impact: 'high' | 'medium' | 'low';
-  probability: 'high' | 'medium' | 'low';
-  status: 'open' | 'mitigated' | 'closed';
+  impact: "high" | "medium" | "low";
+  probability: "high" | "medium" | "low";
+  status: "open" | "mitigated" | "closed";
   mitigationPlan?: string;
 }
 
@@ -244,7 +249,7 @@ export interface QualityCheck {
   _id: string;
   title: string;
   description: string;
-  status: 'pending' | 'passed' | 'failed';
+  status: "pending" | "passed" | "failed";
   date: string;
   inspector: string;
   notes?: string;
@@ -252,10 +257,10 @@ export interface QualityCheck {
 
 export interface Communication {
   _id: string;
-  type: 'email' | 'meeting' | 'phone' | 'other';
+  type: "email" | "meeting" | "phone" | "other";
   subject: string;
   content: string;
   date: string;
   participants: string[];
-  status: 'sent' | 'received' | 'scheduled';
-} 
+  status: "sent" | "received" | "scheduled";
+}

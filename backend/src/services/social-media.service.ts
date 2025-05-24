@@ -11,13 +11,13 @@ export class SocialMediaService {
     this.facebookApi = new FacebookApi({
       appId: process.env.FACEBOOK_APP_ID!,
       appSecret: process.env.FACEBOOK_APP_SECRET!,
-      accessToken: process.env.FACEBOOK_ACCESS_TOKEN!
+      accessToken: process.env.FACEBOOK_ACCESS_TOKEN!,
     });
 
     this.instagramApi = new InstagramApi({
       appId: process.env.INSTAGRAM_APP_ID!,
       appSecret: process.env.INSTAGRAM_APP_SECRET!,
-      accessToken: process.env.INSTAGRAM_ACCESS_TOKEN!
+      accessToken: process.env.INSTAGRAM_ACCESS_TOKEN!,
     });
 
     this.contentModel = new ContentModel();
@@ -28,7 +28,7 @@ export class SocialMediaService {
       const postData = {
         caption: content.content,
         mediaUrl: content.featuredImage,
-        hashtags: content.meta?.keywords || []
+        hashtags: content.meta?.keywords || [],
       };
       await this.instagramApi.createPost(postData);
 
@@ -45,7 +45,7 @@ export class SocialMediaService {
       const postData = {
         message: content.content,
         link: content.featuredImage,
-        scheduledPublishTime: content.publishedAt
+        scheduledPublishTime: content.publishedAt,
       };
       await this.facebookApi.createPost(postData);
 
@@ -57,13 +57,17 @@ export class SocialMediaService {
     }
   }
 
-  async scheduleContent(content: Content, platform: 'instagram' | 'facebook', publishTime: Date): Promise<void> {
+  async scheduleContent(
+    content: Content,
+    platform: 'instagram' | 'facebook',
+    publishTime: Date
+  ): Promise<void> {
     try {
       const postData = {
         content: content.content,
         mediaUrl: content.featuredImage,
         publishTime,
-        meta: content.meta
+        meta: content.meta,
       };
 
       if (platform === 'instagram') {
@@ -80,7 +84,11 @@ export class SocialMediaService {
     }
   }
 
-  async getAnalytics(platform: 'instagram' | 'facebook', startDate: Date, endDate: Date): Promise<any> {
+  async getAnalytics(
+    platform: 'instagram' | 'facebook',
+    startDate: Date,
+    endDate: Date
+  ): Promise<any> {
     try {
       if (platform === 'instagram') {
         return await this.instagramApi.getAnalytics(startDate, endDate);

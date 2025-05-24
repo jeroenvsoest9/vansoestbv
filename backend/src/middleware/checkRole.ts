@@ -13,4 +13,4 @@ export const checkRole = (roles: string[]) => {
 
     next();
   };
-}; 
+};

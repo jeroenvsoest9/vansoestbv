@@ -1,13 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { auth, db } from '../config/database';
-import { 
+import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
   updatePassword,
-  UserCredential
+  UserCredential,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import jwt from 'jsonwebtoken';
@@ -17,11 +17,12 @@ import { AuthRequest, authenticate, checkRole } from '../middleware/auth';
 const router = Router();
 
 // Register new user
-router.post('/register',
+router.post(
+  '/register',
   [
     body('email').isEmail().normalizeEmail(),
     body('password').isLength({ min: 6 }),
-    body('name').trim().notEmpty()
+    body('name').trim().notEmpty(),
   ],
   async (req: Request, res: Response) => {
     try {
@@ -33,7 +34,11 @@ router.post('/register',
       const { email, password, name } = req.body;
 
       // Create user in Firebase Auth
-      const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential: UserCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       // Create user document in Firestore
@@ -42,16 +47,12 @@ router.post('/register',
         email,
         role: 'user',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       });
 
       // Generate JWT token
       const secret = process.env.JWT_SECRET || 'your-secret-key';
-      const token = jwt.sign(
-        { uid: user.uid, email: user.email },
-        secret,
-        { expiresIn: '7d' }
-      );
+      const token = jwt.sign({ uid: user.uid, email: user.email }, secret, { expiresIn: '7d' });
 
       res.status(201).json({
         message: 'User registered successfully',
@@ -59,25 +60,23 @@ router.post('/register',
         user: {
           uid: user.uid,
           email: user.email,
-          name
-        }
+          name,
+        },
       });
     } catch (error: any) {
       console.error('Registration error:', error);
       res.status(400).json({
         error: 'Registration failed',
-        message: error.message
+        message: error.message,
       });
     }
   }
 );
 
 // Login user
-router.post('/login',
-  [
-    body('email').isEmail().normalizeEmail(),
-    body('password').exists()
-  ],
+router.post(
+  '/login',
+  [body('email').isEmail().normalizeEmail(), body('password').exists()],
   async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
@@ -88,7 +87,11 @@ router.post('/login',
       const { email, password } = req.body;
 
       // Sign in with Firebase Auth
-      const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential: UserCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
       // Get user data from Firestore
@@ -97,11 +100,7 @@ router.post('/login',
 
       // Generate JWT token
       const secret = process.env.JWT_SECRET || 'your-secret-key';
-      const token = jwt.sign(
-        { uid: user.uid, email: user.email },
-        secret,
-        { expiresIn: '7d' }
-      );
+      const token = jwt.sign({ uid: user.uid, email: user.email }, secret, { expiresIn: '7d' });
 
       res.json({
         message: 'Login successful',
@@ -110,14 +109,14 @@ router.post('/login',
           uid: user.uid,
           email: user.email,
           name: userData?.name,
-          role: userData?.role
-        }
+          role: userData?.role,
+        },
       });
     } catch (error: any) {
       console.error('Login error:', error);
       res.status(401).json({
         error: 'Login failed',
-        message: error.message
+        message: error.message,
       });
     }
   }
@@ -132,16 +131,15 @@ router.post('/logout', async (req: Request, res: Response) => {
     console.error('Logout error:', error);
     res.status(500).json({
       error: 'Logout failed',
-      message: error.message
+      message: error.message,
     });
   }
 });
 
 // Reset password
-router.post('/reset-password',
-  [
-    body('email').isEmail().normalizeEmail()
-  ],
+router.post(
+  '/reset-password',
+  [body('email').isEmail().normalizeEmail()],
   async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
@@ -157,17 +155,16 @@ router.post('/reset-password',
       console.error('Password reset error:', error);
       res.status(400).json({
         error: 'Password reset failed',
-        message: error.message
+        message: error.message,
       });
     }
   }
 );
 
 // Update password
-router.post('/update-password',
-  [
-    body('newPassword').isLength({ min: 6 })
-  ],
+router.post(
+  '/update-password',
+  [body('newPassword').isLength({ min: 6 })],
   async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
@@ -189,7 +186,7 @@ router.post('/update-password',
       console.error('Password update error:', error);
       res.status(400).json({
         error: 'Password update failed',
-        message: error.message
+        message: error.message,
       });
     }
   }
@@ -207,7 +204,7 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
     console.error('Get user error:', error);
     res.status(500).json({
       error: 'Failed to get user',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -225,57 +222,69 @@ router.put('/me', authenticate, async (req: AuthRequest, res: Response) => {
     console.error('Update user error:', error);
     res.status(500).json({
       error: 'Failed to update user',
-      message: error.message
+      message: error.message,
     });
   }
 });
 
 // Get all users (admin only)
-router.get('/users', [authenticate, checkRole(['admin'])], async (req: AuthRequest, res: Response) => {
-  try {
-    const users = await User.findAll();
-    res.json(users);
-  } catch (error: any) {
-    console.error('Get users error:', error);
-    res.status(500).json({
-      error: 'Failed to get users',
-      message: error.message
-    });
+router.get(
+  '/users',
+  [authenticate, checkRole(['admin'])],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const users = await User.findAll();
+      res.json(users);
+    } catch (error: any) {
+      console.error('Get users error:', error);
+      res.status(500).json({
+        error: 'Failed to get users',
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 // Update user (admin only)
-router.put('/users/:id', [authenticate, checkRole(['admin'])], async (req: AuthRequest, res: Response) => {
-  try {
-    const user = await User.update(req.params.id, req.body);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+router.put(
+  '/users/:id',
+  [authenticate, checkRole(['admin'])],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const user = await User.update(req.params.id, req.body);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json(user);
+    } catch (error: any) {
+      console.error('Update user error:', error);
+      res.status(500).json({
+        error: 'Failed to update user',
+        message: error.message,
+      });
     }
-    res.json(user);
-  } catch (error: any) {
-    console.error('Update user error:', error);
-    res.status(500).json({
-      error: 'Failed to update user',
-      message: error.message
-    });
   }
-});
+);
 
 // Delete user (admin only)
-router.delete('/users/:id', [authenticate, checkRole(['admin'])], async (req: AuthRequest, res: Response) => {
-  try {
-    const success = await User.delete(req.params.id);
-    if (!success) {
-      return res.status(404).json({ error: 'User not found' });
+router.delete(
+  '/users/:id',
+  [authenticate, checkRole(['admin'])],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const success = await User.delete(req.params.id);
+      if (!success) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json({ message: 'User deleted successfully' });
+    } catch (error: any) {
+      console.error('Delete user error:', error);
+      res.status(500).json({
+        error: 'Failed to delete user',
+        message: error.message,
+      });
     }
-    res.json({ message: 'User deleted successfully' });
-  } catch (error: any) {
-    console.error('Delete user error:', error);
-    res.status(500).json({
-      error: 'Failed to delete user',
-      message: error.message
-    });
   }
-});
+);
 
-export default router; 
+export default router;

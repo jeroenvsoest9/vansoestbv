@@ -14,7 +14,7 @@ router.get('/', [authenticate, checkRole(['admin'])], async (req: AuthRequest, r
     console.error('Get users error:', error);
     res.status(500).json({
       error: 'Failed to get users',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -31,7 +31,7 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
     console.error('Get user error:', error);
     res.status(500).json({
       error: 'Failed to get user',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -53,26 +53,30 @@ router.put('/:id', authenticate, async (req: AuthRequest, res: Response) => {
     console.error('Update user error:', error);
     res.status(500).json({
       error: 'Failed to update user',
-      message: error.message
+      message: error.message,
     });
   }
 });
 
 // Delete user (admin only)
-router.delete('/:id', [authenticate, checkRole(['admin'])], async (req: AuthRequest, res: Response) => {
-  try {
-    const success = await User.delete(req.params.id);
-    if (!success) {
-      return res.status(404).json({ error: 'User not found' });
+router.delete(
+  '/:id',
+  [authenticate, checkRole(['admin'])],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const success = await User.delete(req.params.id);
+      if (!success) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json({ message: 'User deleted successfully' });
+    } catch (error: any) {
+      console.error('Delete user error:', error);
+      res.status(500).json({
+        error: 'Failed to delete user',
+        message: error.message,
+      });
     }
-    res.json({ message: 'User deleted successfully' });
-  } catch (error: any) {
-    console.error('Delete user error:', error);
-    res.status(500).json({
-      error: 'Failed to delete user',
-      message: error.message
-    });
   }
-});
+);
 
-export default router; 
+export default router;

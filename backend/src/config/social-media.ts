@@ -35,12 +35,12 @@ export class FacebookApi {
         {
           message: data.message,
           link: data.link,
-          scheduled_publish_time: data.scheduledPublishTime?.getTime() / 1000
+          scheduled_publish_time: data.scheduledPublishTime?.getTime() / 1000,
         },
         {
           params: {
-            access_token: this.config.accessToken
-          }
+            access_token: this.config.accessToken,
+          },
         }
       );
 
@@ -59,18 +59,15 @@ export class FacebookApi {
 
   async getAnalytics(startDate: Date, endDate: Date): Promise<any> {
     try {
-      const response = await axios.get(
-        `${this.baseUrl}/me/insights`,
-        {
-          params: {
-            access_token: this.config.accessToken,
-            metric: 'page_impressions,page_engaged_users',
-            period: 'day',
-            since: startDate.toISOString(),
-            until: endDate.toISOString()
-          }
-        }
-      );
+      const response = await axios.get(`${this.baseUrl}/me/insights`, {
+        params: {
+          access_token: this.config.accessToken,
+          metric: 'page_impressions,page_engaged_users',
+          period: 'day',
+          since: startDate.toISOString(),
+          until: endDate.toISOString(),
+        },
+      });
 
       return response.data;
     } catch (error) {
@@ -81,15 +78,12 @@ export class FacebookApi {
 
   async getAudienceInsights(): Promise<any> {
     try {
-      const response = await axios.get(
-        `${this.baseUrl}/me/insights`,
-        {
-          params: {
-            access_token: this.config.accessToken,
-            metric: 'page_fans_country,page_fans_city,page_fans_gender_age'
-          }
-        }
-      );
+      const response = await axios.get(`${this.baseUrl}/me/insights`, {
+        params: {
+          access_token: this.config.accessToken,
+          metric: 'page_fans_country,page_fans_city,page_fans_gender_age',
+        },
+      });
 
       return response.data;
     } catch (error) {
@@ -112,25 +106,19 @@ export class InstagramApi {
       // Eerst media uploaden als er een afbeelding is
       let mediaId;
       if (data.mediaUrl) {
-        const mediaResponse = await axios.post(
-          `${this.baseUrl}/me/media`,
-          {
-            image_url: data.mediaUrl,
-            caption: data.caption,
-            access_token: this.config.accessToken
-          }
-        );
+        const mediaResponse = await axios.post(`${this.baseUrl}/me/media`, {
+          image_url: data.mediaUrl,
+          caption: data.caption,
+          access_token: this.config.accessToken,
+        });
         mediaId = mediaResponse.data.id;
       }
 
       // Dan de post publiceren
-      const response = await axios.post(
-        `${this.baseUrl}/me/media_publish`,
-        {
-          creation_id: mediaId,
-          access_token: this.config.accessToken
-        }
-      );
+      const response = await axios.post(`${this.baseUrl}/me/media_publish`, {
+        creation_id: mediaId,
+        access_token: this.config.accessToken,
+      });
 
       if (response.status !== 200) {
         throw new Error('Failed to create Instagram post');
@@ -143,15 +131,12 @@ export class InstagramApi {
 
   async schedulePost(data: PostData): Promise<void> {
     try {
-      const response = await axios.post(
-        `${this.baseUrl}/me/media`,
-        {
-          image_url: data.mediaUrl,
-          caption: data.caption,
-          scheduled_publish_time: data.publishTime?.getTime() / 1000,
-          access_token: this.config.accessToken
-        }
-      );
+      const response = await axios.post(`${this.baseUrl}/me/media`, {
+        image_url: data.mediaUrl,
+        caption: data.caption,
+        scheduled_publish_time: data.publishTime?.getTime() / 1000,
+        access_token: this.config.accessToken,
+      });
 
       if (response.status !== 200) {
         throw new Error('Failed to schedule Instagram post');
@@ -164,18 +149,15 @@ export class InstagramApi {
 
   async getAnalytics(startDate: Date, endDate: Date): Promise<any> {
     try {
-      const response = await axios.get(
-        `${this.baseUrl}/me/insights`,
-        {
-          params: {
-            access_token: this.config.accessToken,
-            metric: 'impressions,reach,engagement',
-            period: 'day',
-            since: startDate.toISOString(),
-            until: endDate.toISOString()
-          }
-        }
-      );
+      const response = await axios.get(`${this.baseUrl}/me/insights`, {
+        params: {
+          access_token: this.config.accessToken,
+          metric: 'impressions,reach,engagement',
+          period: 'day',
+          since: startDate.toISOString(),
+          until: endDate.toISOString(),
+        },
+      });
 
       return response.data;
     } catch (error) {
@@ -186,15 +168,12 @@ export class InstagramApi {
 
   async getAudienceInsights(): Promise<any> {
     try {
-      const response = await axios.get(
-        `${this.baseUrl}/me/insights`,
-        {
-          params: {
-            access_token: this.config.accessToken,
-            metric: 'audience_country,audience_city,audience_gender_age'
-          }
-        }
-      );
+      const response = await axios.get(`${this.baseUrl}/me/insights`, {
+        params: {
+          access_token: this.config.accessToken,
+          metric: 'audience_country,audience_city,audience_gender_age',
+        },
+      });
 
       return response.data;
     } catch (error) {
@@ -202,4 +181,4 @@ export class InstagramApi {
       throw error;
     }
   }
-} 
+}

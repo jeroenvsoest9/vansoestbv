@@ -10,6 +10,7 @@
 ## Azure Resources Setup
 
 1. Create the following resources in Azure:
+
    - Azure App Service (for frontend)
    - Azure App Service (for backend)
    - Azure Database for MongoDB
@@ -40,6 +41,7 @@ LOG_PATH=logs
 ## Deployment Steps
 
 1. **Setup Azure DevOps Pipeline**:
+
    - Create a new project in Azure DevOps
    - Import this repository
    - Create a new pipeline using the `azure-pipelines.yml` file
@@ -49,12 +51,14 @@ LOG_PATH=logs
      - `backendAppName`: Your backend app service name
 
 2. **Configure Continuous Deployment**:
+
    - In Azure DevOps, go to Pipelines > Releases
    - Create a new release pipeline
    - Add the build artifact
    - Configure the deployment stages
 
 3. **Database Migration**:
+
    - Connect to your MongoDB database
    - Run any necessary migrations
    - Import initial data if required
@@ -68,11 +72,13 @@ LOG_PATH=logs
 ## Monitoring and Maintenance
 
 1. **Set up Application Insights**:
+
    - Create an Application Insights resource
    - Configure monitoring for both frontend and backend
    - Set up alerts for critical errors
 
 2. **Backup Strategy**:
+
    - Configure automated backups for MongoDB
    - Set up storage account backup
    - Document recovery procedures
@@ -86,11 +92,13 @@ LOG_PATH=logs
 ## Security Considerations
 
 1. **Network Security**:
+
    - Configure VNet integration
    - Set up private endpoints
    - Configure network security groups
 
 2. **Authentication**:
+
    - Enable Azure AD authentication
    - Configure managed identities
    - Set up SSL certificates
@@ -103,6 +111,7 @@ LOG_PATH=logs
 ## Troubleshooting
 
 1. **Common Issues**:
+
    - Check application logs in Azure Portal
    - Verify environment variables
    - Check network connectivity
@@ -116,6 +125,7 @@ LOG_PATH=logs
 ## Cost Optimization
 
 1. **Resource Sizing**:
+
    - Start with B1/B2 tier for App Services
    - Use Basic tier for MongoDB
    - Monitor usage and adjust as needed
@@ -123,4 +133,4 @@ LOG_PATH=logs
 2. **Auto-scaling**:
    - Set up scale-out rules
    - Configure scale-in rules
-   - Monitor costs regularly 
+   - Monitor costs regularly

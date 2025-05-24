@@ -29,11 +29,7 @@ export const validateIndex = (index: Index): void => {
   }
 
   if (!Array.isArray(index.fields) || index.fields.length === 0) {
-    throw new FirestoreError(
-      'Index must have at least one field',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Index must have at least one field', 'invalid-argument', 400);
   }
 
   index.fields.forEach((field, index) => {
@@ -58,25 +54,25 @@ export const validateIndex = (index: Index): void => {
 export const generateIndexes = (indexes: Index[]): Index[] => {
   indexes.forEach(validateIndex);
 
-  return indexes.map(index => ({
+  return indexes.map((index) => ({
     collectionGroup: index.collectionGroup,
     queryScope: index.queryScope,
-    fields: index.fields.map(field => ({
+    fields: index.fields.map((field) => ({
       fieldPath: field.fieldPath,
-      order: field.order
-    }))
+      order: field.order,
+    })),
   }));
 };
 
 export const generateCompositeIndexes = (indexes: Index[]): Index[] => {
   indexes.forEach(validateIndex);
 
-  return indexes.map(index => ({
+  return indexes.map((index) => ({
     collectionGroup: index.collectionGroup,
     queryScope: index.queryScope,
-    fields: index.fields.map(field => ({
+    fields: index.fields.map((field) => ({
       fieldPath: field.fieldPath,
-      order: field.order
-    }))
+      order: field.order,
+    })),
   }));
-}; 
+};

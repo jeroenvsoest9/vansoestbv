@@ -1,33 +1,42 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { AuthState, LoginCredentials, RegisterCredentials } from '../../types/auth';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import {
+  AuthState,
+  LoginCredentials,
+  RegisterCredentials,
+} from "../../types/auth";
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, credentials);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Login failed');
+      return rejectWithValue(error.response?.data?.message || "Login failed");
     }
-  }
+  },
 );
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (credentials: RegisterCredentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, credentials);
-      localStorage.setItem('token', response.data.token);
+      const response = await axios.post(
+        `${API_URL}/auth/register`,
+        credentials,
+      );
+      localStorage.setItem("token", response.data.token);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Registration failed');
+      return rejectWithValue(
+        error.response?.data?.message || "Registration failed",
+      );
     }
-  }
+  },
 );
 
 const initialState: AuthState = {
@@ -37,7 +46,7 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setCredentials: (
@@ -45,7 +54,7 @@ const authSlice = createSlice({
       action: PayloadAction<{
         user: { id: string; username: string; email: string };
         token: string;
-      }>
+      }>,
     ) => {
       const { user, token } = action.payload;
       state.user = user;
@@ -86,8 +95,8 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       });
-  }
+  },
 });
 
 export const { setCredentials, logout } = authSlice.actions;
-export default authSlice.reducer; 
+export default authSlice.reducer;

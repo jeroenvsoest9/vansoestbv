@@ -7,11 +7,7 @@ export interface SecurityRule {
 
 export const validateSecurityRule = (rule: SecurityRule): void => {
   if (!rule.allow || !['read', 'write', 'create', 'update', 'delete'].includes(rule.allow)) {
-    throw new FirestoreError(
-      'Invalid security rule allow value',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Invalid security rule allow value', 'invalid-argument', 400);
   }
 
   if (!rule.if || typeof rule.if !== 'string') {
@@ -32,7 +28,7 @@ export const generateFirestoreRules = (rules: Record<string, SecurityRule[]>): s
     validateRules(rules);
     return `
       match ${path} {
-        ${rules.map(rule => `allow ${rule.allow}: if ${rule.if};`).join('\n        ')}
+        ${rules.map((rule) => `allow ${rule.allow}: if ${rule.if};`).join('\n        ')}
       }
     `;
   };
@@ -58,7 +54,7 @@ export const generateStorageRules = (rules: Record<string, SecurityRule[]>): str
     validateRules(rules);
     return `
       match ${path} {
-        ${rules.map(rule => `allow ${rule.allow}: if ${rule.if};`).join('\n        ')}
+        ${rules.map((rule) => `allow ${rule.allow}: if ${rule.if};`).join('\n        ')}
       }
     `;
   };
@@ -73,4 +69,4 @@ export const generateStorageRules = (rules: Record<string, SecurityRule[]>): str
       }
     }
   `;
-}; 
+};

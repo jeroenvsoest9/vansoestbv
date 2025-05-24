@@ -2,7 +2,7 @@ trigger:
   - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
   - group: van-soest-cms-variables
@@ -16,40 +16,40 @@ stages:
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: '18.x'
-            displayName: 'Install Node.js'
+              versionSpec: "18.x"
+            displayName: "Install Node.js"
 
           - script: |
               npm install
               cd frontend && npm install
               cd ../backend && npm install
-            displayName: 'Install dependencies'
+            displayName: "Install dependencies"
 
           - script: |
               cd frontend && npm run build
-            displayName: 'Build frontend'
+            displayName: "Build frontend"
 
           - task: ArchiveFiles@2
             inputs:
-              rootFolderOrFile: 'frontend/build'
+              rootFolderOrFile: "frontend/build"
               includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/frontend.zip"
               replaceExistingArchive: true
 
           - task: ArchiveFiles@2
             inputs:
-              rootFolderOrFile: 'backend'
+              rootFolderOrFile: "backend"
               includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/backend.zip"
               replaceExistingArchive: true
 
           - task: PublishBuildArtifacts@1
             inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
+              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+              ArtifactName: "drop"
+              publishLocation: "Container"
 
   - stage: Deploy
     displayName: Deploy stage
@@ -61,16 +61,16 @@ stages:
         steps:
           - task: AzureWebApp@1
             inputs:
-              azureSubscription: '$(azureSubscription)'
-              appType: 'webApp'
-              appName: '$(webAppName)'
-              package: '$(Pipeline.Workspace)/drop/frontend.zip'
-              deploymentMethod: 'auto'
+              azureSubscription: "$(azureSubscription)"
+              appType: "webApp"
+              appName: "$(webAppName)"
+              package: "$(Pipeline.Workspace)/drop/frontend.zip"
+              deploymentMethod: "auto"
 
           - task: AzureWebApp@1
             inputs:
-              azureSubscription: '$(azureSubscription)'
-              appType: 'webApp'
-              appName: '$(backendAppName)'
-              package: '$(Pipeline.Workspace)/drop/backend.zip'
-              deploymentMethod: 'auto' 
+              azureSubscription: "$(azureSubscription)"
+              appType: "webApp"
+              appName: "$(backendAppName)"
+              package: "$(Pipeline.Workspace)/drop/backend.zip"
+              deploymentMethod: "auto"

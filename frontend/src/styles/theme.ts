@@ -1,89 +1,89 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#A31621', // Van Soest Red
-      light: '#c41e2b',
-      dark: '#7a1018',
+      main: "#A31621", // Van Soest Red
+      light: "#c41e2b",
+      dark: "#7a1018",
     },
     secondary: {
-      main: '#1A2353', // Van Soest Blue
-      light: '#2a3366',
-      dark: '#131a3f',
+      main: "#1A2353", // Van Soest Blue
+      light: "#2a3366",
+      dark: "#131a3f",
     },
     background: {
-      default: '#ffffff',
-      paper: '#ffffff',
+      default: "#ffffff",
+      paper: "#ffffff",
     },
     error: {
-      main: '#d32f2f',
+      main: "#d32f2f",
     },
     warning: {
-      main: '#ed6c02',
+      main: "#ed6c02",
     },
     info: {
-      main: '#0288d1',
+      main: "#0288d1",
     },
     success: {
-      main: '#2e7d32',
+      main: "#2e7d32",
     },
   },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontSize: '2.5rem',
+      fontSize: "2.5rem",
       fontWeight: 600,
-      color: '#1A2353',
+      color: "#1A2353",
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: "2rem",
       fontWeight: 600,
-      color: '#1A2353',
+      color: "#1A2353",
     },
     h3: {
-      fontSize: '1.75rem',
+      fontSize: "1.75rem",
       fontWeight: 600,
-      color: '#1A2353',
+      color: "#1A2353",
     },
     h4: {
-      fontSize: '1.5rem',
+      fontSize: "1.5rem",
       fontWeight: 600,
-      color: '#1A2353',
+      color: "#1A2353",
     },
     h5: {
-      fontSize: '1.25rem',
+      fontSize: "1.25rem",
       fontWeight: 600,
-      color: '#1A2353',
+      color: "#1A2353",
     },
     h6: {
-      fontSize: '1rem',
+      fontSize: "1rem",
       fontWeight: 600,
-      color: '#1A2353',
+      color: "#1A2353",
     },
     subtitle1: {
-      fontSize: '1rem',
+      fontSize: "1rem",
       fontWeight: 500,
-      color: '#666666',
+      color: "#666666",
     },
     body1: {
-      fontSize: '1rem',
-      color: '#333333',
+      fontSize: "1rem",
+      color: "#333333",
     },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
+          textTransform: "none",
           borderRadius: 8,
-          padding: '8px 16px',
+          padding: "8px 16px",
           fontWeight: 500,
         },
         contained: {
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           },
         },
       },
@@ -91,7 +91,7 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          '& .MuiOutlinedInput-root': {
+          "& .MuiOutlinedInput-root": {
             borderRadius: 8,
           },
         },
@@ -101,20 +101,20 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 12,
-          boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.05)',
+          boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.05)",
         },
       },
     },
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#ffffff',
-          color: '#1A2353',
-          boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.05)',
+          backgroundColor: "#ffffff",
+          color: "#1A2353",
+          boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.05)",
         },
       },
     },
   },
 });
 
-export default theme; 
+export default theme;

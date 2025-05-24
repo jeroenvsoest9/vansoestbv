@@ -20,11 +20,11 @@ export class UserModel {
   async create(data: Omit<User, 'createdAt' | 'updatedAt'>): Promise<User> {
     const userRef = this.collection.doc(data.uid);
     const now = new Date();
-    
+
     const user: User = {
       ...data,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     await userRef.set(user);
@@ -51,7 +51,7 @@ export class UserModel {
 
     const updateData = {
       ...data,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     await userRef.update(updateData);
@@ -70,10 +70,7 @@ export class UserModel {
     return true;
   }
 
-  async list(filters?: {
-    role?: User['role'];
-    status?: User['status'];
-  }): Promise<User[]> {
+  async list(filters?: { role?: User['role']; status?: User['status'] }): Promise<User[]> {
     let query = this.collection;
 
     if (filters?.role) {
@@ -85,13 +82,13 @@ export class UserModel {
     }
 
     const snapshot = await query.get();
-    return snapshot.docs.map(doc => doc.data() as User);
+    return snapshot.docs.map((doc) => doc.data() as User);
   }
 
   async updateLastLogin(uid: string): Promise<void> {
     await this.collection.doc(uid).update({
       lastLogin: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
   }
-} 
+}

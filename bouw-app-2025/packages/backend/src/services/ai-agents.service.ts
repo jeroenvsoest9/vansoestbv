@@ -1,5 +1,5 @@
-import { Configuration, OpenAIApi } from 'openai';
-import { logger } from '@utils/logger';
+import { Configuration, OpenAIApi } from "openai";
+import { logger } from "@utils/logger";
 
 // Initialize OpenAI
 const configuration = new Configuration({
@@ -18,12 +18,12 @@ export const aiAgents = {
       const response = await openai.createCompletion({
         model: "gpt-4",
         prompt,
-        max_tokens: 500
+        max_tokens: 500,
       });
 
       return response.data.choices[0].text;
     } catch (error) {
-      logger.error('Project Management Agent error:', error);
+      logger.error("Project Management Agent error:", error);
       throw error;
     }
   },
@@ -38,12 +38,12 @@ export const aiAgents = {
       const response = await openai.createCompletion({
         model: "gpt-4",
         prompt,
-        max_tokens: 500
+        max_tokens: 500,
       });
 
       return response.data.choices[0].text;
     } catch (error) {
-      logger.error('Document Processing Agent error:', error);
+      logger.error("Document Processing Agent error:", error);
       throw error;
     }
   },
@@ -58,12 +58,12 @@ export const aiAgents = {
       const response = await openai.createCompletion({
         model: "gpt-4",
         prompt,
-        max_tokens: 500
+        max_tokens: 500,
       });
 
       return response.data.choices[0].text;
     } catch (error) {
-      logger.error('Quality Assurance Agent error:', error);
+      logger.error("Quality Assurance Agent error:", error);
       throw error;
     }
   },
@@ -79,12 +79,12 @@ export const aiAgents = {
       const response = await openai.createCompletion({
         model: "gpt-4",
         prompt,
-        max_tokens: 500
+        max_tokens: 500,
       });
 
       return response.data.choices[0].text;
     } catch (error) {
-      logger.error('Maintenance Agent error:', error);
+      logger.error("Maintenance Agent error:", error);
       throw error;
     }
   },
@@ -99,12 +99,12 @@ export const aiAgents = {
       const response = await openai.createCompletion({
         model: "gpt-4",
         prompt,
-        max_tokens: 500
+        max_tokens: 500,
       });
 
       return response.data.choices[0].text;
     } catch (error) {
-      logger.error('Design Agent error:', error);
+      logger.error("Design Agent error:", error);
       throw error;
     }
   },
@@ -120,12 +120,12 @@ export const aiAgents = {
       const response = await openai.createCompletion({
         model: "gpt-4",
         prompt,
-        max_tokens: 500
+        max_tokens: 500,
       });
 
       return response.data.choices[0].text;
     } catch (error) {
-      logger.error('SEO Agent error:', error);
+      logger.error("SEO Agent error:", error);
       throw error;
     }
   },
@@ -141,13 +141,13 @@ export const aiAgents = {
       const response = await openai.createCompletion({
         model: "gpt-4",
         prompt,
-        max_tokens: 500
+        max_tokens: 500,
       });
 
       return response.data.choices[0].text;
     } catch (error) {
-      logger.error('ICT Agent error:', error);
+      logger.error("ICT Agent error:", error);
       throw error;
     }
-  }
-}; 
+  },
+};

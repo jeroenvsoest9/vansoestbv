@@ -1,5 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import authApi, { LoginCredentials, RegisterData, User } from '../../services/api/auth';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import authApi, {
+  LoginCredentials,
+  RegisterData,
+  User,
+} from "../../services/api/auth";
 
 interface AuthState {
   user: User | null;
@@ -10,64 +14,67 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem('token'),
+  token: localStorage.getItem("token"),
   loading: false,
-  error: null
+  error: null,
 };
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials: LoginCredentials) => {
     const response = await authApi.login(credentials);
-    localStorage.setItem('token', response.token);
+    localStorage.setItem("token", response.token);
     return response;
-  }
+  },
 );
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (data: RegisterData) => {
     const response = await authApi.register(data);
-    localStorage.setItem('token', response.token);
+    localStorage.setItem("token", response.token);
     return response;
-  }
+  },
 );
 
 export const getCurrentUser = createAsyncThunk(
-  'auth/getCurrentUser',
+  "auth/getCurrentUser",
   async () => {
     return await authApi.getCurrentUser();
-  }
+  },
 );
 
 export const updateProfile = createAsyncThunk(
-  'auth/updateProfile',
+  "auth/updateProfile",
   async (data: Partial<User>) => {
     return await authApi.updateProfile(data);
-  }
+  },
 );
 
 export const changePassword = createAsyncThunk(
-  'auth/changePassword',
-  async ({ currentPassword, newPassword }: { currentPassword: string; newPassword: string }) => {
+  "auth/changePassword",
+  async ({
+    currentPassword,
+    newPassword,
+  }: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
     await authApi.changePassword(currentPassword, newPassword);
-  }
+  },
 );
 
-export const logout = createAsyncThunk(
-  'auth/logout',
-  async () => {
-    localStorage.removeItem('token');
-  }
-);
+export const logout = createAsyncThunk("auth/logout", async () => {
+  localStorage.removeItem("token");
+});
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     clearError: (state) => {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -83,7 +90,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Login failed';
+        state.error = action.error.message || "Login failed";
       })
       // Register
       .addCase(register.pending, (state) => {
@@ -97,7 +104,7 @@ const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Registration failed';
+        state.error = action.error.message || "Registration failed";
       })
       // Get Current User
       .addCase(getCurrentUser.pending, (state) => {
@@ -110,10 +117,10 @@ const authSlice = createSlice({
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to get user';
+        state.error = action.error.message || "Failed to get user";
         state.user = null;
         state.token = null;
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
       })
       // Update Profile
       .addCase(updateProfile.pending, (state) => {
@@ -126,7 +133,7 @@ const authSlice = createSlice({
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to update profile';
+        state.error = action.error.message || "Failed to update profile";
       })
       // Change Password
       .addCase(changePassword.pending, (state) => {
@@ -138,15 +145,15 @@ const authSlice = createSlice({
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to change password';
+        state.error = action.error.message || "Failed to change password";
       })
       // Logout
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
       });
-  }
+  },
 });
 
 export const { clearError } = authSlice.actions;
-export default authSlice.reducer; 
+export default authSlice.reducer;

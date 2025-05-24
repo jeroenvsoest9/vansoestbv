@@ -26,19 +26,11 @@ export interface AnalyticsEvent {
 
 export const validateAnalyticsEvent = (event: AnalyticsEvent): void => {
   if (!event.name || typeof event.name !== 'string') {
-    throw new FirestoreError(
-      'Event name must be a non-empty string',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Event name must be a non-empty string', 'invalid-argument', 400);
   }
 
   if (event.params && typeof event.params !== 'object') {
-    throw new FirestoreError(
-      'Event parameters must be an object',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Event parameters must be an object', 'invalid-argument', 400);
   }
 };
 
@@ -49,11 +41,7 @@ export const logAnalyticsEvent = async (event: AnalyticsEvent): Promise<void> =>
     const analyticsInstance = initializeAnalytics();
     await logEvent(analyticsInstance, event.name, event.params);
   } catch (error) {
-    throw new FirestoreError(
-      'Failed to log analytics event',
-      'analytics/logging-failed',
-      500
-    );
+    throw new FirestoreError('Failed to log analytics event', 'analytics/logging-failed', 500);
   }
 };
 
@@ -62,8 +50,8 @@ export const logPageView = async (pagePath: string, pageTitle: string): Promise<
     name: 'page_view',
     params: {
       page_path: pagePath,
-      page_title: pageTitle
-    }
+      page_title: pageTitle,
+    },
   });
 };
 
@@ -79,23 +67,20 @@ export const logUserAction = async (
       action,
       category,
       label,
-      value
-    }
+      value,
+    },
   });
 };
 
-export const logError = async (
-  error: Error,
-  fatal: boolean = false
-): Promise<void> => {
+export const logError = async (error: Error, fatal: boolean = false): Promise<void> => {
   await logAnalyticsEvent({
     name: 'error',
     params: {
       error_name: error.name,
       error_message: error.message,
       error_stack: error.stack,
-      fatal
-    }
+      fatal,
+    },
   });
 };
 
@@ -110,7 +95,7 @@ export const logUserEngagement = async (
     params: {
       engagement_type: engagementType,
       duration,
-      ...metadata
-    }
+      ...metadata,
+    },
   });
-}; 
+};

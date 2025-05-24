@@ -31,7 +31,7 @@ export const errorHandler = (
     error: err,
     stack: err.stack,
     path: req.path,
-    method: req.method
+    method: req.method,
   });
 
   // Firebase Auth errors
@@ -92,6 +92,6 @@ export const errorHandler = (
   res.status(error.statusCode).json({
     status: error.status,
     message: error.message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
-}; 
+};

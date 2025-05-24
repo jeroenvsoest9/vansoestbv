@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Paper,
@@ -15,24 +15,32 @@ import {
   DialogActions,
   TextField,
   MenuItem,
-  Alert
-} from '@mui/material';
-import { Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
-import { Project, TeamMember, TeamMemberFormData } from '../../types/project';
-import { addTeamMember, updateTeamMember, removeTeamMember } from '../../store/slices/projectsSlice';
-import { useAppDispatch } from '../../store/hooks';
+  Alert,
+} from "@mui/material";
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+} from "@mui/icons-material";
+import { Project, TeamMember, TeamMemberFormData } from "../../types/project";
+import {
+  addTeamMember,
+  updateTeamMember,
+  removeTeamMember,
+} from "../../store/slices/projectsSlice";
+import { useAppDispatch } from "../../store/hooks";
 
 interface ProjectTeamProps {
   project: Project;
 }
 
 const ROLES = [
-  'Project Manager',
-  'Architect',
-  'Engineer',
-  'Contractor',
-  'Client',
-  'Other'
+  "Project Manager",
+  "Architect",
+  "Engineer",
+  "Contractor",
+  "Client",
+  "Other",
 ];
 
 const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
@@ -40,9 +48,9 @@ const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [formData, setFormData] = useState<TeamMemberFormData>({
-    name: '',
-    role: '',
-    email: ''
+    name: "",
+    role: "",
+    email: "",
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -52,14 +60,14 @@ const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
       setFormData({
         name: member.name,
         role: member.role,
-        email: member.email
+        email: member.email,
       });
     } else {
       setSelectedMember(null);
       setFormData({
-        name: '',
-        role: '',
-        email: ''
+        name: "",
+        role: "",
+        email: "",
       });
     }
     setDialogOpen(true);
@@ -70,61 +78,72 @@ const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
     setDialogOpen(false);
     setSelectedMember(null);
     setFormData({
-      name: '',
-      role: '',
-      email: ''
+      name: "",
+      role: "",
+      email: "",
     });
     setError(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async () => {
     try {
       if (!formData.name || !formData.role || !formData.email) {
-        setError('All fields are required');
+        setError("All fields are required");
         return;
       }
 
       if (selectedMember) {
-        await dispatch(updateTeamMember({
-          projectId: project._id,
-          memberId: selectedMember.id,
-          data: formData
-        })).unwrap();
+        await dispatch(
+          updateTeamMember({
+            projectId: project._id,
+            memberId: selectedMember.id,
+            data: formData,
+          }),
+        ).unwrap();
       } else {
-        await dispatch(addTeamMember({
-          projectId: project._id,
-          member: formData
-        })).unwrap();
+        await dispatch(
+          addTeamMember({
+            projectId: project._id,
+            member: formData,
+          }),
+        ).unwrap();
       }
 
       handleCloseDialog();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     }
   };
 
   const handleDelete = async (memberId: string) => {
     try {
-      await dispatch(removeTeamMember({
-        projectId: project._id,
-        memberId
-      })).unwrap();
+      await dispatch(
+        removeTeamMember({
+          projectId: project._id,
+          memberId,
+        }),
+      ).unwrap();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     }
   };
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
         <Typography variant="h6">Team Members</Typography>
         <Button
           variant="contained"
@@ -150,11 +169,19 @@ const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
                 primary={member.name}
                 secondary={
                   <>
-                    <Typography component="span" variant="body2" color="textPrimary">
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      color="textPrimary"
+                    >
                       {member.role}
                     </Typography>
                     <br />
-                    <Typography component="span" variant="body2" color="textSecondary">
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      color="textSecondary"
+                    >
                       {member.email}
                     </Typography>
                   </>
@@ -182,9 +209,14 @@ const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
         </List>
       </Paper>
 
-      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      <Dialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>
-          {selectedMember ? 'Edit Team Member' : 'Add Team Member'}
+          {selectedMember ? "Edit Team Member" : "Add Team Member"}
         </DialogTitle>
         <DialogContent>
           <Box sx={{ pt: 2 }}>
@@ -228,7 +260,7 @@ const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleSubmit} variant="contained" color="primary">
-            {selectedMember ? 'Update' : 'Add'}
+            {selectedMember ? "Update" : "Add"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -236,4 +268,4 @@ const ProjectTeam: React.FC<ProjectTeamProps> = ({ project }) => {
   );
 };
 
-export default ProjectTeam; 
+export default ProjectTeam;

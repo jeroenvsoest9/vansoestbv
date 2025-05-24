@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -15,8 +15,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Alert
-} from '@mui/material';
+  Alert,
+} from "@mui/material";
 import {
   Refresh as RefreshIcon,
   Build as BuildIcon,
@@ -34,17 +34,26 @@ import {
   Share as ShareIcon,
   Create as CreateIcon,
   Nature as NatureIcon,
-  ShoppingCart as ShoppingCartIcon
-} from '@mui/icons-material';
-import { Agent, AgentSystem, AgentType, AGENT_CONFIGS } from '../../types/agents';
-import { LearningSession, AgentCollaboration, AgentKnowledge } from '../../types/agent-knowledge';
-import AgentLearning from './AgentLearning';
+  ShoppingCart as ShoppingCartIcon,
+} from "@mui/icons-material";
+import {
+  Agent,
+  AgentSystem,
+  AgentType,
+  AGENT_CONFIGS,
+} from "../../types/agents";
+import {
+  LearningSession,
+  AgentCollaboration,
+  AgentKnowledge,
+} from "../../types/agent-knowledge";
+import AgentLearning from "./AgentLearning";
 
 const AgentSystem: React.FC = () => {
   const [system, setSystem] = useState<AgentSystem>({
     agents: [],
     actions: [],
-    status: 'healthy',
+    status: "healthy",
     lastHealthCheck: new Date(),
     metrics: {
       totalAgents: 0,
@@ -53,8 +62,8 @@ const AgentSystem: React.FC = () => {
       completedActions: 0,
       failedActions: 0,
       averageResponseTime: 0,
-      systemUptime: 0
-    }
+      systemUptime: 0,
+    },
   });
 
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
@@ -72,35 +81,35 @@ const AgentSystem: React.FC = () => {
     setLoading(true);
     try {
       // Initialize all agents based on configs
-      const agents: Agent[] = Object.values(AGENT_CONFIGS).map(config => ({
+      const agents: Agent[] = Object.values(AGENT_CONFIGS).map((config) => ({
         id: `${config.type}-${Date.now()}`,
         name: config.name,
         type: config.type,
-        status: 'active',
+        status: "active",
         lastActive: new Date(),
         capabilities: config.capabilities,
         metrics: {
           tasksCompleted: 0,
           successRate: 100,
           averageResponseTime: 0,
-        }
+        },
       }));
 
-      setSystem(prev => ({
+      setSystem((prev) => ({
         ...prev,
         agents,
         metrics: {
           ...prev.metrics,
           totalAgents: agents.length,
-          activeAgents: agents.length
-        }
+          activeAgents: agents.length,
+        },
       }));
 
       // Start agent monitoring
-      agents.forEach(agent => startAgentMonitoring(agent));
+      agents.forEach((agent) => startAgentMonitoring(agent));
     } catch (err) {
-      setError('Failed to initialize agents');
-      console.error('Error initializing agents:', err);
+      setError("Failed to initialize agents");
+      console.error("Error initializing agents:", err);
     } finally {
       setLoading(false);
     }
@@ -113,7 +122,7 @@ const AgentSystem: React.FC = () => {
         await performAgentCheck(agent);
       } catch (err) {
         console.error(`Error checking agent ${agent.name}:`, err);
-        updateAgentStatus(agent.id, 'error');
+        updateAgentStatus(agent.id, "error");
       }
     }, config.checkInterval);
   };
@@ -123,112 +132,116 @@ const AgentSystem: React.FC = () => {
     const startTime = Date.now();
     try {
       // Agent-specific checks would go here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate work
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate work
+
       updateAgentMetrics(agent.id, {
         tasksCompleted: agent.metrics.tasksCompleted + 1,
         successRate: 100,
-        averageResponseTime: (agent.metrics.averageResponseTime + (Date.now() - startTime)) / 2
+        averageResponseTime:
+          (agent.metrics.averageResponseTime + (Date.now() - startTime)) / 2,
       });
-      
-      updateAgentStatus(agent.id, 'active');
+
+      updateAgentStatus(agent.id, "active");
     } catch (err) {
-      updateAgentStatus(agent.id, 'error');
+      updateAgentStatus(agent.id, "error");
       throw err;
     }
   };
 
-  const updateAgentStatus = (agentId: string, status: 'active' | 'inactive' | 'error') => {
-    setSystem(prev => ({
+  const updateAgentStatus = (
+    agentId: string,
+    status: "active" | "inactive" | "error",
+  ) => {
+    setSystem((prev) => ({
       ...prev,
-      agents: prev.agents.map(agent =>
+      agents: prev.agents.map((agent) =>
         agent.id === agentId
           ? { ...agent, status, lastActive: new Date() }
-          : agent
+          : agent,
       ),
       metrics: {
         ...prev.metrics,
-        activeAgents: prev.agents.filter(a => a.status === 'active').length
-      }
+        activeAgents: prev.agents.filter((a) => a.status === "active").length,
+      },
     }));
   };
 
-  const updateAgentMetrics = (agentId: string, metrics: Agent['metrics']) => {
-    setSystem(prev => ({
+  const updateAgentMetrics = (agentId: string, metrics: Agent["metrics"]) => {
+    setSystem((prev) => ({
       ...prev,
-      agents: prev.agents.map(agent =>
-        agent.id === agentId
-          ? { ...agent, metrics }
-          : agent
-      )
+      agents: prev.agents.map((agent) =>
+        agent.id === agentId ? { ...agent, metrics } : agent,
+      ),
     }));
   };
 
   const checkSystemHealth = () => {
     const now = new Date();
-    const activeAgents = system.agents.filter(a => a.status === 'active').length;
+    const activeAgents = system.agents.filter(
+      (a) => a.status === "active",
+    ).length;
     const totalAgents = system.agents.length;
-    
-    let newStatus: 'healthy' | 'degraded' | 'critical' = 'healthy';
+
+    let newStatus: "healthy" | "degraded" | "critical" = "healthy";
     if (activeAgents < totalAgents * 0.5) {
-      newStatus = 'critical';
+      newStatus = "critical";
     } else if (activeAgents < totalAgents) {
-      newStatus = 'degraded';
+      newStatus = "degraded";
     }
 
-    setSystem(prev => ({
+    setSystem((prev) => ({
       ...prev,
       status: newStatus,
       lastHealthCheck: now,
       metrics: {
         ...prev.metrics,
         activeAgents,
-        systemUptime: (now.getTime() - prev.lastHealthCheck.getTime()) / 1000
-      }
+        systemUptime: (now.getTime() - prev.lastHealthCheck.getTime()) / 1000,
+      },
     }));
   };
 
   const getAgentIcon = (type: AgentType) => {
     switch (type) {
-      case 'project_manager':
+      case "project_manager":
         return <BuildIcon />;
-      case 'financial_controller':
+      case "financial_controller":
         return <AssessmentIcon />;
-      case 'quality_assurance':
+      case "quality_assurance":
         return <WarningIcon />;
-      case 'risk_manager':
+      case "risk_manager":
         return <SecurityIcon />;
-      case 'team_coordinator':
+      case "team_coordinator":
         return <GroupIcon />;
-      case 'document_manager':
+      case "document_manager":
         return <DescriptionIcon />;
-      case 'communication_manager':
+      case "communication_manager":
         return <MessageIcon />;
-      case 'system_maintainer':
+      case "system_maintainer":
         return <StorageIcon />;
-      case 'security_monitor':
+      case "security_monitor":
         return <SecurityIcon />;
-      case 'performance_optimizer':
+      case "performance_optimizer":
         return <SpeedIcon />;
-      case 'qaa_agent':
+      case "qaa_agent":
         return <VerifiedUserIcon />;
-      case 'ict_manager':
+      case "ict_manager":
         return <ComputerIcon />;
-      case 'offerte_manager':
+      case "offerte_manager":
         return <DescriptionIcon />;
-      case 'calculatie_specialist':
+      case "calculatie_specialist":
         return <CalculateIcon />;
-      case 'social_media_manager':
+      case "social_media_manager":
         return <ShareIcon />;
-      case 'content_creator':
+      case "content_creator":
         return <CreateIcon />;
-      case 'maintenance_coordinator':
+      case "maintenance_coordinator":
         return <BuildIcon />;
-      case 'safety_officer':
+      case "safety_officer":
         return <SecurityIcon />;
-      case 'environmental_manager':
+      case "environmental_manager":
         return <NatureIcon />;
-      case 'procurement_specialist':
+      case "procurement_specialist":
         return <ShoppingCartIcon />;
       default:
         return <BuildIcon />;
@@ -247,36 +260,45 @@ const AgentSystem: React.FC = () => {
 
   const handleSessionCreate = (session: LearningSession) => {
     // Notify relevant agents about the new learning session
-    const relevantAgents = system.agents.filter(agent => 
-      session.participants.includes(agent.id) ||
-      session.topics.some(topic => agent.capabilities.some(cap => cap.includes(topic)))
+    const relevantAgents = system.agents.filter(
+      (agent) =>
+        session.participants.includes(agent.id) ||
+        session.topics.some((topic) =>
+          agent.capabilities.some((cap) => cap.includes(topic)),
+        ),
     );
 
-    relevantAgents.forEach(agent => {
-      console.log(`Notifying ${agent.name} about new learning session: ${session.title}`);
+    relevantAgents.forEach((agent) => {
+      console.log(
+        `Notifying ${agent.name} about new learning session: ${session.title}`,
+      );
       // Here you would implement actual notification logic
     });
   };
 
   const handleCollaborationCreate = (collaboration: AgentCollaboration) => {
     // Notify participating agents about the new collaboration
-    const participatingAgents = system.agents.filter(agent => 
-      collaboration.agents.includes(agent.id)
+    const participatingAgents = system.agents.filter((agent) =>
+      collaboration.agents.includes(agent.id),
     );
 
-    participatingAgents.forEach(agent => {
-      console.log(`Notifying ${agent.name} about new collaboration: ${collaboration.purpose}`);
+    participatingAgents.forEach((agent) => {
+      console.log(
+        `Notifying ${agent.name} about new collaboration: ${collaboration.purpose}`,
+      );
       // Here you would implement actual notification logic
     });
   };
 
   const handleKnowledgeShare = (knowledge: AgentKnowledge) => {
     // Share knowledge with relevant agents
-    const relevantAgents = system.agents.filter(agent => 
-      knowledge.tags.some(tag => agent.capabilities.some(cap => cap.includes(tag)))
+    const relevantAgents = system.agents.filter((agent) =>
+      knowledge.tags.some((tag) =>
+        agent.capabilities.some((cap) => cap.includes(tag)),
+      ),
     );
 
-    relevantAgents.forEach(agent => {
+    relevantAgents.forEach((agent) => {
       console.log(`Sharing knowledge with ${agent.name}: ${knowledge.title}`);
       // Here you would implement actual knowledge sharing logic
     });
@@ -292,10 +314,13 @@ const AgentSystem: React.FC = () => {
 
   return (
     <Box p={3}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">
-          Agent System Dashboard
-        </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Typography variant="h4">Agent System Dashboard</Typography>
         <Button
           startIcon={<RefreshIcon />}
           onClick={handleRefresh}
@@ -320,17 +345,13 @@ const AgentSystem: React.FC = () => {
             <Typography variant="body2" color="textSecondary">
               Total Agents
             </Typography>
-            <Typography variant="h4">
-              {system.metrics.totalAgents}
-            </Typography>
+            <Typography variant="h4">{system.metrics.totalAgents}</Typography>
           </Box>
           <Box flex="1" minWidth="200px">
             <Typography variant="body2" color="textSecondary">
               Active Agents
             </Typography>
-            <Typography variant="h4">
-              {system.metrics.activeAgents}
-            </Typography>
+            <Typography variant="h4">{system.metrics.activeAgents}</Typography>
           </Box>
           <Box flex="1" minWidth="200px">
             <Typography variant="body2" color="textSecondary">
@@ -352,14 +373,14 @@ const AgentSystem: React.FC = () => {
       </Paper>
 
       <Box display="flex" flexWrap="wrap" gap={3}>
-        {system.agents.map(agent => (
+        {system.agents.map((agent) => (
           <Box key={agent.id} flex="1" minWidth="300px" maxWidth="400px">
             <Card
               sx={{
-                cursor: 'pointer',
-                '&:hover': {
-                  boxShadow: 6
-                }
+                cursor: "pointer",
+                "&:hover": {
+                  boxShadow: 6,
+                },
               }}
               onClick={() => handleAgentClick(agent)}
             >
@@ -371,11 +392,11 @@ const AgentSystem: React.FC = () => {
                   <Chip
                     label={agent.status}
                     color={
-                      agent.status === 'active'
-                        ? 'success'
-                        : agent.status === 'error'
-                        ? 'error'
-                        : 'default'
+                      agent.status === "active"
+                        ? "success"
+                        : agent.status === "error"
+                          ? "error"
+                          : "default"
                     }
                     size="small"
                   />
@@ -442,12 +463,8 @@ const AgentSystem: React.FC = () => {
                     Capabilities
                   </Typography>
                   <Box display="flex" flexWrap="wrap" gap={1}>
-                    {selectedAgent.capabilities.map(capability => (
-                      <Chip
-                        key={capability}
-                        label={capability}
-                        size="small"
-                      />
+                    {selectedAgent.capabilities.map((capability) => (
+                      <Chip key={capability} label={capability} size="small" />
                     ))}
                   </Box>
                 </Box>
@@ -492,9 +509,7 @@ const AgentSystem: React.FC = () => {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setDialogOpen(false)}>
-                Close
-              </Button>
+              <Button onClick={() => setDialogOpen(false)}>Close</Button>
             </DialogActions>
           </>
         )}
@@ -503,4 +518,4 @@ const AgentSystem: React.FC = () => {
   );
 };
 
-export default AgentSystem; 
+export default AgentSystem;

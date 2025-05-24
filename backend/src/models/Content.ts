@@ -1,6 +1,18 @@
 import { adminDb } from '../config/firebase';
 import { collections } from '../config/firebase';
-import { collection, doc, getDoc, setDoc, updateDoc, query, where, getDocs, orderBy, limit, startAfter } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  limit,
+  startAfter,
+} from 'firebase/firestore';
 
 export interface Content {
   id: string;
@@ -29,12 +41,12 @@ export class ContentModel {
   async create(data: Omit<Content, 'id' | 'createdAt' | 'updatedAt'>): Promise<Content> {
     const contentRef = this.collection.doc();
     const now = new Date();
-    
+
     const content: Content = {
       id: contentRef.id,
       ...data,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     await contentRef.set(content);
@@ -61,7 +73,7 @@ export class ContentModel {
 
     const updateData = {
       ...data,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     await contentRef.update(updateData);
@@ -105,7 +117,7 @@ export class ContentModel {
     }
 
     const snapshot = await query.get();
-    return snapshot.docs.map(doc => doc.data() as Content);
+    return snapshot.docs.map((doc) => doc.data() as Content);
   }
 
   async publish(id: string): Promise<Content | null> {
@@ -120,7 +132,7 @@ export class ContentModel {
     await contentRef.update({
       status: 'published',
       publishedAt: now,
-      updatedAt: now
+      updatedAt: now,
     });
 
     return (await contentRef.get()).data() as Content;
@@ -136,9 +148,9 @@ export class ContentModel {
 
     await contentRef.update({
       status: 'archived',
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
 
     return (await contentRef.get()).data() as Content;
   }
-} 
+}

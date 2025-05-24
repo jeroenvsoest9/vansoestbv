@@ -4,7 +4,7 @@ import {
   onSnapshot,
   QuerySnapshot,
   DocumentSnapshot,
-  Unsubscribe
+  Unsubscribe,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { buildQuery, QueryOptions } from './queries';
@@ -26,9 +26,9 @@ export const subscribeToCollection = <T>(
   return onSnapshot(
     q,
     (snapshot: QuerySnapshot) => {
-      const data = snapshot.docs.map(doc => ({
+      const data = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       })) as T[];
 
       if (callback.onNext) {
@@ -60,7 +60,7 @@ export const subscribeToDocument = <T>(
       const data = snapshot.exists()
         ? {
             id: snapshot.id,
-            ...snapshot.data()
+            ...snapshot.data(),
           }
         : null;
 
@@ -95,8 +95,8 @@ export const createSubscriptionManager = () => {
       };
     },
     unsubscribeAll: () => {
-      subscriptions.forEach(unsubscribe => unsubscribe());
+      subscriptions.forEach((unsubscribe) => unsubscribe());
       subscriptions.length = 0;
-    }
+    },
   };
-}; 
+};

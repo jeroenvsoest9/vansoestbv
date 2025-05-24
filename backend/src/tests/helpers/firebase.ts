@@ -6,19 +6,19 @@ export const setupTestData = async () => {
     email: 'admin@example.com',
     password: 'password123',
     displayName: 'Admin User',
-    emailVerified: true
+    emailVerified: true,
   });
   const editorUser = await adminAuth.createUser({
     email: 'editor@example.com',
     password: 'password123',
     displayName: 'Editor User',
-    emailVerified: true
+    emailVerified: true,
   });
   const regularUser = await adminAuth.createUser({
     email: 'user@example.com',
     password: 'password123',
     displayName: 'Regular User',
-    emailVerified: true
+    emailVerified: true,
   });
 
   // Zet custom claims voor rollen
@@ -36,7 +36,7 @@ export const setupTestData = async () => {
     role: 'admin',
     status: 'active',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   });
   await adminDb.collection('users').doc(editorUser.uid).set({
     uid: editorUser.uid,
@@ -47,7 +47,7 @@ export const setupTestData = async () => {
     role: 'editor',
     status: 'active',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   });
   await adminDb.collection('users').doc(regularUser.uid).set({
     uid: regularUser.uid,
@@ -58,21 +58,29 @@ export const setupTestData = async () => {
     role: 'user',
     status: 'active',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   });
 
   // Voeg default settings toe
-  await adminDb.collection('settings').doc('site').set({
-    siteName: 'Test Site',
-    siteDescription: 'Test site description',
-    theme: { primaryColor: '#000', secondaryColor: '#fff', fontFamily: 'Arial' },
-    seo: { title: 'Test', description: 'Test', keywords: ['test'], robots: 'index, follow' },
-    social: {},
-    contact: { email: 'test@example.com' },
-    features: { enableBlog: true, enableShop: false, enableComments: true, enableNewsletter: true },
-    updatedAt: new Date(),
-    updatedBy: adminUser.uid
-  });
+  await adminDb
+    .collection('settings')
+    .doc('site')
+    .set({
+      siteName: 'Test Site',
+      siteDescription: 'Test site description',
+      theme: { primaryColor: '#000', secondaryColor: '#fff', fontFamily: 'Arial' },
+      seo: { title: 'Test', description: 'Test', keywords: ['test'], robots: 'index, follow' },
+      social: {},
+      contact: { email: 'test@example.com' },
+      features: {
+        enableBlog: true,
+        enableShop: false,
+        enableComments: true,
+        enableNewsletter: true,
+      },
+      updatedAt: new Date(),
+      updatedBy: adminUser.uid,
+    });
 
   return { adminUser, editorUser, regularUser };
 };
@@ -96,7 +104,17 @@ export const teardownTestData = async () => {
 };
 
 // Utility: maak test content aan
-export async function createTestContent({ title = 'Test', slug = 'test', type = 'page', authorUid }: { title?: string; slug?: string; type?: string; authorUid: string }) {
+export async function createTestContent({
+  title = 'Test',
+  slug = 'test',
+  type = 'page',
+  authorUid,
+}: {
+  title?: string;
+  slug?: string;
+  type?: string;
+  authorUid: string;
+}) {
   const ref = adminDb.collection('content').doc();
   const now = new Date();
   const data = {
@@ -109,7 +127,7 @@ export async function createTestContent({ title = 'Test', slug = 'test', type = 
     author: authorUid,
     tags: [],
     createdAt: now,
-    updatedAt: now
+    updatedAt: now,
   };
   await ref.set(data);
   return data;
@@ -124,4 +142,4 @@ export async function getSessionToken(email: string) {
   // Hier zou je normaal gesproken de client SDK gebruiken om het customToken om te wisselen voor een idToken
   // Voor nu retourneer je het customToken zodat je deze in je test kunt gebruiken
   return customToken;
-} 
+}

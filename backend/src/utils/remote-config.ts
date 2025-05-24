@@ -1,9 +1,4 @@
-import {
-  getRemoteConfig,
-  getValue,
-  RemoteConfig,
-  Value
-} from 'firebase/remote-config';
+import { getRemoteConfig, getValue, RemoteConfig, Value } from 'firebase/remote-config';
 import { app } from '../config/firebase';
 import { FirestoreError } from './errors';
 
@@ -25,10 +20,7 @@ export const initializeRemoteConfig = (): RemoteConfig => {
   return remoteConfig;
 };
 
-export const getRemoteConfigValue = <T>(
-  key: string,
-  defaultValue: T
-): T => {
+export const getRemoteConfigValue = <T>(key: string, defaultValue: T): T => {
   const remoteConfigInstance = initializeRemoteConfig();
   const value = getValue(remoteConfigInstance, key);
 
@@ -45,11 +37,7 @@ export const getRemoteConfigValue = <T>(
 
 export const validateRemoteConfigValue = (value: Value): void => {
   if (!value) {
-    throw new FirestoreError(
-      'Remote config value is required',
-      'invalid-argument',
-      400
-    );
+    throw new FirestoreError('Remote config value is required', 'invalid-argument', 400);
   }
 
   if (!value.asString()) {
@@ -78,4 +66,4 @@ export const getRemoteConfigObject = <T extends Record<string, any>>(
   defaultValue: T
 ): T => {
   return getRemoteConfigValue<T>(key, defaultValue);
-}; 
+};

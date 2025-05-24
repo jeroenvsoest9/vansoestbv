@@ -1,47 +1,45 @@
-import { Client } from '@microsoft/microsoft-graph-client';
-import { TokenCredentialAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials';
-import { DefaultAzureCredential } from '@azure/identity';
-import { logger } from '@utils/logger';
+import { Client } from "@microsoft/microsoft-graph-client";
+import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
+import { DefaultAzureCredential } from "@azure/identity";
+import { logger } from "@utils/logger";
 
 // Initialize Microsoft Graph Client for Teams
 const credential = new DefaultAzureCredential();
 const authProvider = new TokenCredentialAuthenticationProvider(credential, {
-  scopes: ['https://graph.microsoft.com/.default']
+  scopes: ["https://graph.microsoft.com/.default"],
 });
 
 const graphClient = Client.initWithMiddleware({
-  authProvider
+  authProvider,
 });
 
 export const teamsService = {
   // Create Project Team
   async createProjectTeam(projectData: any) {
     try {
-      const team = await graphClient
-        .api('/teams')
-        .post({
-          template: 'standard',
-          displayName: `Project: ${projectData.name}`,
-          description: projectData.description,
-          members: projectData.teamMembers.map((member: any) => ({
-            '@odata.type': '#microsoft.graph.aadUserConversationMember',
-            roles: [member.role],
-            'user@odata.bind': `https://graph.microsoft.com/v1.0/users/${member.id}`
-          }))
-        });
+      const team = await graphClient.api("/teams").post({
+        template: "standard",
+        displayName: `Project: ${projectData.name}`,
+        description: projectData.description,
+        members: projectData.teamMembers.map((member: any) => ({
+          "@odata.type": "#microsoft.graph.aadUserConversationMember",
+          roles: [member.role],
+          "user@odata.bind": `https://graph.microsoft.com/v1.0/users/${member.id}`,
+        })),
+      });
 
       // Create channels
       await this.createTeamChannels(team.id, [
-        'Algemeen',
-        'Planning',
-        'Documenten',
-        'Kwaliteit',
-        'Veiligheid'
+        "Algemeen",
+        "Planning",
+        "Documenten",
+        "Kwaliteit",
+        "Veiligheid",
       ]);
 
       return team;
     } catch (error) {
-      logger.error('Failed to create project team:', error);
+      logger.error("Failed to create project team:", error);
       throw error;
     }
   },
@@ -50,15 +48,13 @@ export const teamsService = {
   async createTeamChannels(teamId: string, channelNames: string[]) {
     try {
       for (const name of channelNames) {
-        await graphClient
-          .api(`/teams/${teamId}/channels`)
-          .post({
-            displayName: name,
-            description: `${name} channel for project discussions`
-          });
+        await graphClient.api(`/teams/${teamId}/channels`).post({
+          displayName: name,
+          description: `${name} channel for project discussions`,
+        });
       }
     } catch (error) {
-      logger.error('Failed to create team channels:', error);
+      logger.error("Failed to create team channels:", error);
       throw error;
     }
   },
@@ -70,11 +66,11 @@ export const teamsService = {
         .api(`/teams/${teamId}/channels/${channelId}/messages`)
         .post({
           body: {
-            content: message
-          }
+            content: message,
+          },
         });
     } catch (error) {
-      logger.error('Failed to send team message:', error);
+      logger.error("Failed to send team message:", error);
       throw error;
     }
   },
@@ -88,28 +84,28 @@ export const teamsService = {
           subject: meetingData.subject,
           start: {
             dateTime: meetingData.startTime,
-            timeZone: 'UTC'
+            timeZone: "UTC",
           },
           end: {
             dateTime: meetingData.endTime,
-            timeZone: 'UTC'
+            timeZone: "UTC",
           },
           location: {
-            displayName: 'Microsoft Teams Meeting'
+            displayName: "Microsoft Teams Meeting",
           },
           attendees: meetingData.attendees.map((attendee: any) => ({
             emailAddress: {
               address: attendee.email,
-              name: attendee.name
+              name: attendee.name,
             },
-            type: 'required'
-          }))
+            type: "required",
+          })),
         });
 
       return meeting;
     } catch (error) {
-      logger.error('Failed to schedule team meeting:', error);
+      logger.error("Failed to schedule team meeting:", error);
       throw error;
     }
-  }
-}; 
+  },
+};

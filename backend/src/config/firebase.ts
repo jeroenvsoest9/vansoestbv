@@ -15,7 +15,7 @@ const firebaseConfig = {
   projectId: process.env.FIREBASE_PROJECT_ID,
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID
+  appId: process.env.FIREBASE_APP_ID,
 };
 
 // Initialize Firebase client
@@ -35,9 +35,9 @@ try {
     credential: cert({
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     }),
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   });
 
   // Initialize services
@@ -47,7 +47,7 @@ try {
 
   // Configure Firestore settings
   adminDb.settings({
-    ignoreUndefinedProperties: true
+    ignoreUndefinedProperties: true,
   });
 
   logger.info('Firebase Admin initialized successfully');
@@ -64,21 +64,21 @@ export const collections = {
   content: 'content',
   settings: 'settings',
   menus: 'menus',
-  invoices: 'invoices'
+  invoices: 'invoices',
 } as const;
 
 // Firestore indexes
 export const indexes = {
   users: {
     email: ['email', 'asc'],
-    username: ['username', 'asc']
+    username: ['username', 'asc'],
   },
   content: {
     type: ['type', 'asc', 'status', 'asc'],
-    author: ['author', 'asc', 'createdAt', 'desc']
+    author: ['author', 'asc', 'createdAt', 'desc'],
   },
   invoices: {
     status: ['status', 'asc', 'createdAt', 'desc'],
-    user: ['userId', 'asc', 'createdAt', 'desc']
-  }
-} as const; 
+    user: ['userId', 'asc', 'createdAt', 'desc'],
+  },
+} as const;

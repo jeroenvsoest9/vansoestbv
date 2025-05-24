@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -8,20 +8,20 @@ import {
   Button,
   Link,
   Alert,
-  Grid
-} from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { register, clearError } from '../../store/slices/authSlice';
+  Grid,
+} from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { register, clearError } from "../../store/slices/authSlice";
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
-  const [passwordError, setPasswordError] = useState('');
+  const [passwordError, setPasswordError] = useState("");
   const { loading, error } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -36,16 +36,16 @@ const Register: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
-    if (name === 'confirmPassword' || name === 'password') {
-      if (name === 'confirmPassword' && value !== formData.password) {
-        setPasswordError('Passwords do not match');
-      } else if (name === 'password' && value !== formData.confirmPassword) {
-        setPasswordError('Passwords do not match');
+    if (name === "confirmPassword" || name === "password") {
+      if (name === "confirmPassword" && value !== formData.password) {
+        setPasswordError("Passwords do not match");
+      } else if (name === "password" && value !== formData.confirmPassword) {
+        setPasswordError("Passwords do not match");
       } else {
-        setPasswordError('');
+        setPasswordError("");
       }
     }
   };
@@ -57,7 +57,7 @@ const Register: React.FC = () => {
     try {
       const { confirmPassword, ...registerData } = formData;
       await dispatch(register(registerData)).unwrap();
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
       // Error is handled by the auth slice
     }
@@ -66,19 +66,19 @@ const Register: React.FC = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'background.default'
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: "background.default",
       }}
     >
       <Paper
         elevation={3}
         sx={{
           p: 4,
-          width: '100%',
-          maxWidth: 600
+          width: "100%",
+          maxWidth: 600,
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom align="center">
@@ -156,9 +156,9 @@ const Register: React.FC = () => {
             sx={{ mt: 3, mb: 2 }}
             disabled={loading || !!passwordError}
           >
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? "Registering..." : "Register"}
           </Button>
-          <Box sx={{ textAlign: 'center' }}>
+          <Box sx={{ textAlign: "center" }}>
             <Link href="/login" variant="body2">
               Already have an account? Sign in
             </Link>
@@ -169,4 +169,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register; 
+export default Register;

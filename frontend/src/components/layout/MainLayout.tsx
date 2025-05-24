@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -17,7 +17,7 @@ import {
   Avatar,
   Menu,
   MenuItem,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
@@ -28,7 +28,7 @@ import {
   Person as ClientIcon,
   Settings as SettingsIcon,
   Notifications as NotificationsIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
 const drawerWidth = 280;
 
@@ -36,18 +36,18 @@ const MainLayout: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'Projecten', icon: <ProjectIcon />, path: '/projects' },
-    { text: 'Financieel', icon: <FinanceIcon />, path: '/financial' },
-    { text: 'HR & Tijd', icon: <HRIcon />, path: '/hr' },
-    { text: 'Documenten', icon: <DocumentIcon />, path: '/documents' },
-    { text: 'Klantportaal', icon: <ClientIcon />, path: '/client' },
-    { text: 'Instellingen', icon: <SettingsIcon />, path: '/settings' },
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+    { text: "Projecten", icon: <ProjectIcon />, path: "/projects" },
+    { text: "Financieel", icon: <FinanceIcon />, path: "/financial" },
+    { text: "HR & Tijd", icon: <HRIcon />, path: "/hr" },
+    { text: "Documenten", icon: <DocumentIcon />, path: "/documents" },
+    { text: "Klantportaal", icon: <ClientIcon />, path: "/client" },
+    { text: "Instellingen", icon: <SettingsIcon />, path: "/settings" },
   ];
 
   const handleDrawerToggle = () => {
@@ -63,15 +63,22 @@ const MainLayout: React.FC = () => {
   };
 
   const drawer = (
-    <Box sx={{ overflow: 'auto' }}>
-      <Toolbar sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        borderBottom: `1px solid ${theme.palette.divider}`,
-        py: 2
-      }}>
-        <Typography variant="h6" noWrap component="div" sx={{ color: theme.palette.primary.main }}>
+    <Box sx={{ overflow: "auto" }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          py: 2,
+        }}
+      >
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ color: theme.palette.primary.main }}
+        >
           Van Soest Bouw
         </Typography>
       </Toolbar>
@@ -86,15 +93,21 @@ const MainLayout: React.FC = () => {
             }}
             selected={location.pathname.startsWith(item.path)}
             sx={{
-              '&.Mui-selected': {
+              "&.Mui-selected": {
                 backgroundColor: theme.palette.primary.light,
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: theme.palette.primary.light,
                 },
               },
             }}
           >
-            <ListItemIcon sx={{ color: location.pathname.startsWith(item.path) ? theme.palette.primary.main : 'inherit' }}>
+            <ListItemIcon
+              sx={{
+                color: location.pathname.startsWith(item.path)
+                  ? theme.palette.primary.main
+                  : "inherit",
+              }}
+            >
               {item.icon}
             </ListItemIcon>
             <ListItemText primary={item.text} />
@@ -105,14 +118,14 @@ const MainLayout: React.FC = () => {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
         sx={{
           width: { md: `calc(100% - ${drawerWidth}px)` },
           ml: { md: `${drawerWidth}px` },
-          backgroundColor: 'white',
+          backgroundColor: "white",
           color: theme.palette.primary.main,
         }}
       >
@@ -122,12 +135,13 @@ const MainLayout: React.FC = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
+            sx={{ mr: 2, display: { md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {menuItems.find(item => location.pathname.startsWith(item.path))?.text || 'Dashboard'}
+            {menuItems.find((item) => location.pathname.startsWith(item.path))
+              ?.text || "Dashboard"}
           </Typography>
           <IconButton color="inherit">
             <NotificationsIcon />
@@ -137,7 +151,13 @@ const MainLayout: React.FC = () => {
             size="small"
             sx={{ ml: 2 }}
           >
-            <Avatar sx={{ width: 32, height: 32, bgcolor: theme.palette.primary.main }}>
+            <Avatar
+              sx={{
+                width: 32,
+                height: 32,
+                bgcolor: theme.palette.primary.main,
+              }}
+            >
               JS
             </Avatar>
           </IconButton>
@@ -164,8 +184,11 @@ const MainLayout: React.FC = () => {
             keepMounted: true,
           }}
           sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -173,8 +196,11 @@ const MainLayout: React.FC = () => {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "none", md: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -187,7 +213,7 @@ const MainLayout: React.FC = () => {
           flexGrow: 1,
           p: 3,
           width: { md: `calc(100% - ${drawerWidth}px)` },
-          minHeight: '100vh',
+          minHeight: "100vh",
           backgroundColor: theme.palette.background.default,
         }}
       >
@@ -198,4 +224,4 @@ const MainLayout: React.FC = () => {
   );
 };
 
-export default MainLayout; 
+export default MainLayout;

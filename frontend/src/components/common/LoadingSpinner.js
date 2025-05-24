@@ -1,15 +1,15 @@
-import React from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import React from "react";
+import { Box, CircularProgress } from "@mui/material";
 
 const LoadingSpinner = () => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: (theme) => theme.palette.background.default
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: (theme) => theme.palette.background.default,
       }}
     >
       <CircularProgress />
@@ -17,4 +17,4 @@ const LoadingSpinner = () => {
   );
 };
 
-export default LoadingSpinner; 
+export default LoadingSpinner;

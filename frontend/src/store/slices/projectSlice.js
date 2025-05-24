@@ -1,90 +1,90 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Create async thunks for project actions
 export const fetchProjects = createAsyncThunk(
-  'projects/fetchProjects',
+  "projects/fetchProjects",
   async (_, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
-      const response = await axios.get('/api/projects', {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get("/api/projects", {
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const fetchProjectById = createAsyncThunk(
-  'projects/fetchProjectById',
+  "projects/fetchProjectById",
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       const response = await axios.get(`/api/projects/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const createProject = createAsyncThunk(
-  'projects/createProject',
+  "projects/createProject",
   async (projectData, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
-      const response = await axios.post('/api/projects', projectData, {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.post("/api/projects", projectData, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const updateProject = createAsyncThunk(
-  'projects/updateProject',
+  "projects/updateProject",
   async ({ id, projectData }, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       const response = await axios.put(`/api/projects/${id}`, projectData, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteProject = createAsyncThunk(
-  'projects/deleteProject',
+  "projects/deleteProject",
   async (id, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       await axios.delete(`/api/projects/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return id;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // Create the project slice
 const projectSlice = createSlice({
-  name: 'projects',
+  name: "projects",
   initialState: {
     projects: [],
     currentProject: null,
     isLoading: false,
-    error: null
+    error: null,
   },
   reducers: {
     clearProjectError: (state) => {
@@ -92,7 +92,7 @@ const projectSlice = createSlice({
     },
     clearCurrentProject: (state) => {
       state.currentProject = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -107,7 +107,7 @@ const projectSlice = createSlice({
       })
       .addCase(fetchProjects.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to fetch projects';
+        state.error = action.payload?.message || "Failed to fetch projects";
       })
       // Fetch Project By Id
       .addCase(fetchProjectById.pending, (state) => {
@@ -120,7 +120,7 @@ const projectSlice = createSlice({
       })
       .addCase(fetchProjectById.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to fetch project';
+        state.error = action.payload?.message || "Failed to fetch project";
       })
       // Create Project
       .addCase(createProject.pending, (state) => {
@@ -133,7 +133,7 @@ const projectSlice = createSlice({
       })
       .addCase(createProject.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to create project';
+        state.error = action.payload?.message || "Failed to create project";
       })
       // Update Project
       .addCase(updateProject.pending, (state) => {
@@ -142,17 +142,22 @@ const projectSlice = createSlice({
       })
       .addCase(updateProject.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.projects.findIndex(p => p._id === action.payload._id);
+        const index = state.projects.findIndex(
+          (p) => p._id === action.payload._id,
+        );
         if (index !== -1) {
           state.projects[index] = action.payload;
         }
-        if (state.currentProject && state.currentProject._id === action.payload._id) {
+        if (
+          state.currentProject &&
+          state.currentProject._id === action.payload._id
+        ) {
           state.currentProject = action.payload;
         }
       })
       .addCase(updateProject.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to update project';
+        state.error = action.payload?.message || "Failed to update project";
       })
       // Delete Project
       .addCase(deleteProject.pending, (state) => {
@@ -161,17 +166,20 @@ const projectSlice = createSlice({
       })
       .addCase(deleteProject.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.projects = state.projects.filter(p => p._id !== action.payload);
-        if (state.currentProject && state.currentProject._id === action.payload) {
+        state.projects = state.projects.filter((p) => p._id !== action.payload);
+        if (
+          state.currentProject &&
+          state.currentProject._id === action.payload
+        ) {
           state.currentProject = null;
         }
       })
       .addCase(deleteProject.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload?.message || 'Failed to delete project';
+        state.error = action.payload?.message || "Failed to delete project";
       });
-  }
+  },
 });
 
 export const { clearProjectError, clearCurrentProject } = projectSlice.actions;
-export default projectSlice.reducer; 
+export default projectSlice.reducer;

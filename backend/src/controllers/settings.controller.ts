@@ -17,36 +17,28 @@ export class SettingsController {
       if (!settings) {
         return res.status(404).json({
           success: false,
-          error: 'Settings not found'
+          error: 'Settings not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          settings
-        }
+          settings,
+        },
       });
     } catch (error: any) {
       logger.error('Error in get settings:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
 
   async update(req: Request, res: Response) {
     try {
-      const {
-        siteName,
-        siteDescription,
-        theme,
-        seo,
-        social,
-        contact,
-        features
-      } = req.body;
+      const { siteName, siteDescription, theme, seo, social, contact, features } = req.body;
 
       const userId = req.user?.uid;
 
@@ -62,8 +54,8 @@ export class SettingsController {
         const logoFile = bucket.file(`settings/logo/${Date.now()}-${file.name}`);
         await logoFile.save(file.data, {
           metadata: {
-            contentType: file.mimetype
-          }
+            contentType: file.mimetype,
+          },
         });
         logo = logoFile.publicUrl();
       }
@@ -76,8 +68,8 @@ export class SettingsController {
         const faviconFile = bucket.file(`settings/favicon/${Date.now()}-${file.name}`);
         await faviconFile.save(file.data, {
           metadata: {
-            contentType: file.mimetype
-          }
+            contentType: file.mimetype,
+          },
         });
         favicon = faviconFile.publicUrl();
       }
@@ -92,42 +84,34 @@ export class SettingsController {
         social,
         contact,
         features,
-        updatedBy: userId
+        updatedBy: userId,
       });
 
       if (!settings) {
         return res.status(404).json({
           success: false,
-          error: 'Settings not found'
+          error: 'Settings not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          settings
-        }
+          settings,
+        },
       });
     } catch (error: any) {
       logger.error('Error in update settings:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
 
   async initialize(req: Request, res: Response) {
     try {
-      const {
-        siteName,
-        siteDescription,
-        theme,
-        seo,
-        social,
-        contact,
-        features
-      } = req.body;
+      const { siteName, siteDescription, theme, seo, social, contact, features } = req.body;
 
       const userId = req.user?.uid;
 
@@ -143,8 +127,8 @@ export class SettingsController {
         const logoFile = bucket.file(`settings/logo/${Date.now()}-${file.name}`);
         await logoFile.save(file.data, {
           metadata: {
-            contentType: file.mimetype
-          }
+            contentType: file.mimetype,
+          },
         });
         logo = logoFile.publicUrl();
       }
@@ -157,8 +141,8 @@ export class SettingsController {
         const faviconFile = bucket.file(`settings/favicon/${Date.now()}-${file.name}`);
         await faviconFile.save(file.data, {
           metadata: {
-            contentType: file.mimetype
-          }
+            contentType: file.mimetype,
+          },
         });
         favicon = faviconFile.publicUrl();
       }
@@ -174,20 +158,20 @@ export class SettingsController {
         contact,
         features,
         createdBy: userId,
-        updatedBy: userId
+        updatedBy: userId,
       });
 
       res.status(201).json({
         success: true,
         data: {
-          settings
-        }
+          settings,
+        },
       });
     } catch (error: any) {
       logger.error('Error in initialize settings:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -199,22 +183,22 @@ export class SettingsController {
       if (!settings) {
         return res.status(404).json({
           success: false,
-          error: 'Settings not found'
+          error: 'Settings not found',
         });
       }
 
       res.status(200).json({
         success: true,
         data: {
-          settings
-        }
+          settings,
+        },
       });
     } catch (error: any) {
       logger.error('Error in reset settings:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
-} 
+}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Drawer,
   Box,
@@ -10,25 +10,29 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Button,
-  Divider
-} from '@mui/material';
+  Divider,
+} from "@mui/material";
 import {
   Close as CloseIcon,
   Delete as DeleteIcon,
   CheckCircle as CheckCircleIcon,
   Error as ErrorIcon,
   Info as InfoIcon,
-  Warning as WarningIcon
-} from '@mui/icons-material';
-import { removeNotification, markNotificationAsRead, clearNotifications } from '../../store/slices/uiSlice';
+  Warning as WarningIcon,
+} from "@mui/icons-material";
+import {
+  removeNotification,
+  markNotificationAsRead,
+  clearNotifications,
+} from "../../store/slices/uiSlice";
 
 const getNotificationIcon = (type) => {
   switch (type) {
-    case 'success':
+    case "success":
       return <CheckCircleIcon color="success" />;
-    case 'error':
+    case "error":
       return <ErrorIcon color="error" />;
-    case 'warning':
+    case "warning":
       return <WarningIcon color="warning" />;
     default:
       return <InfoIcon color="info" />;
@@ -62,7 +66,14 @@ const NotificationCenter = () => {
       onClose={handleClose}
     >
       <Box sx={{ width: 320, p: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
           <Typography variant="h6">Notificaties</Typography>
           <IconButton onClick={handleClose} size="small">
             <CloseIcon />
@@ -77,9 +88,11 @@ const NotificationCenter = () => {
                   <ListItem
                     alignItems="flex-start"
                     sx={{
-                      backgroundColor: notification.read ? 'transparent' : 'action.hover',
-                      '&:hover': {
-                        backgroundColor: 'action.selected',
+                      backgroundColor: notification.read
+                        ? "transparent"
+                        : "action.hover",
+                      "&:hover": {
+                        backgroundColor: "action.selected",
                       },
                     }}
                   >
@@ -101,7 +114,7 @@ const NotificationCenter = () => {
                             component="span"
                             variant="caption"
                             color="text.secondary"
-                            sx={{ display: 'block', mt: 0.5 }}
+                            sx={{ display: "block", mt: 0.5 }}
                           >
                             {new Date(notification.timestamp).toLocaleString()}
                           </Typography>
@@ -132,7 +145,7 @@ const NotificationCenter = () => {
                 </React.Fragment>
               ))}
             </List>
-            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -146,12 +159,12 @@ const NotificationCenter = () => {
         ) : (
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
               minHeight: 200,
-              color: 'text.secondary',
+              color: "text.secondary",
             }}
           >
             <InfoIcon sx={{ fontSize: 48, mb: 2, opacity: 0.5 }} />
@@ -163,4 +176,4 @@ const NotificationCenter = () => {
   );
 };
 
-export default NotificationCenter; 
+export default NotificationCenter;

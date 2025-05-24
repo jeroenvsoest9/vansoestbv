@@ -19,7 +19,7 @@ export class AuthController {
         email,
         password,
         displayName: `${firstName} ${lastName}`,
-        emailVerified: false
+        emailVerified: false,
       });
 
       // Create user in Firestore
@@ -30,7 +30,7 @@ export class AuthController {
         firstName,
         lastName,
         role: 'user',
-        status: 'active'
+        status: 'active',
       });
 
       res.status(201).json({
@@ -43,15 +43,15 @@ export class AuthController {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            status: user.status
-          }
-        }
+            status: user.status,
+          },
+        },
       });
     } catch (error: any) {
       logger.error('Error in register:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -73,7 +73,7 @@ export class AuthController {
 
       // Create session token
       const sessionToken = await adminAuth.createSessionCookie(idToken, {
-        expiresIn: 60 * 60 * 24 * 5 * 1000 // 5 days
+        expiresIn: 60 * 60 * 24 * 5 * 1000, // 5 days
       });
 
       res.status(200).json({
@@ -86,16 +86,16 @@ export class AuthController {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            status: user.status
+            status: user.status,
           },
-          sessionToken
-        }
+          sessionToken,
+        },
       });
     } catch (error: any) {
       logger.error('Error in login:', error);
       res.status(401).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -112,13 +112,13 @@ export class AuthController {
 
       res.status(200).json({
         success: true,
-        message: 'Logged out successfully'
+        message: 'Logged out successfully',
       });
     } catch (error: any) {
       logger.error('Error in logout:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -145,15 +145,15 @@ export class AuthController {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            status: user.status
-          }
-        }
+            status: user.status,
+          },
+        },
       });
     } catch (error: any) {
       logger.error('Error in verifySession:', error);
       res.status(401).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -167,13 +167,13 @@ export class AuthController {
 
       res.status(200).json({
         success: true,
-        message: 'Password reset email sent'
+        message: 'Password reset email sent',
       });
     } catch (error: any) {
       logger.error('Error in resetPassword:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -184,19 +184,19 @@ export class AuthController {
 
       // Update password
       await adminAuth.updateUser(uid, {
-        password: newPassword
+        password: newPassword,
       });
 
       res.status(200).json({
         success: true,
-        message: 'Password updated successfully'
+        message: 'Password updated successfully',
       });
     } catch (error: any) {
       logger.error('Error in updatePassword:', error);
       res.status(400).json({
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   }
-} 
+}

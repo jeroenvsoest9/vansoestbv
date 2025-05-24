@@ -18,7 +18,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
     console.error('Get settings error:', error);
     res.status(500).json({
       error: 'Failed to get settings',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -39,14 +39,14 @@ router.put('/', [authenticate, checkRole(['admin'])], async (req: AuthRequest, r
       await setDoc(settingsRef, {
         ...req.body,
         updatedAt: new Date().toISOString(),
-        updatedBy: req.user?.uid
+        updatedBy: req.user?.uid,
       });
     } else {
       // Update existing settings
       await updateDoc(settingsRef, {
         ...req.body,
         updatedAt: new Date().toISOString(),
-        updatedBy: req.user?.uid
+        updatedBy: req.user?.uid,
       });
     }
 
@@ -56,7 +56,7 @@ router.put('/', [authenticate, checkRole(['admin'])], async (req: AuthRequest, r
     console.error('Update settings error:', error);
     res.status(500).json({
       error: 'Failed to update settings',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -81,41 +81,45 @@ router.get('/:key', authenticate, async (req: AuthRequest, res: Response) => {
     console.error('Get setting error:', error);
     res.status(500).json({
       error: 'Failed to get setting',
-      message: error.message
+      message: error.message,
     });
   }
 });
 
 // Update specific setting (admin only)
-router.put('/:key', [authenticate, checkRole(['admin'])], async (req: AuthRequest, res: Response) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+router.put(
+  '/:key',
+  [authenticate, checkRole(['admin'])],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const settingsRef = doc(db, 'settings', 'global');
+      const settingsDoc = await getDoc(settingsRef);
+
+      if (!settingsDoc.exists()) {
+        return res.status(404).json({ error: 'Settings not found' });
+      }
+
+      await updateDoc(settingsRef, {
+        [req.params.key]: req.body.value,
+        updatedAt: new Date().toISOString(),
+        updatedBy: req.user?.uid,
+      });
+
+      const updatedSettings = await getDoc(settingsRef);
+      res.json({ key: req.params.key, value: updatedSettings.data()?.[req.params.key] });
+    } catch (error: any) {
+      console.error('Update setting error:', error);
+      res.status(500).json({
+        error: 'Failed to update setting',
+        message: error.message,
+      });
     }
-
-    const settingsRef = doc(db, 'settings', 'global');
-    const settingsDoc = await getDoc(settingsRef);
-
-    if (!settingsDoc.exists()) {
-      return res.status(404).json({ error: 'Settings not found' });
-    }
-
-    await updateDoc(settingsRef, {
-      [req.params.key]: req.body.value,
-      updatedAt: new Date().toISOString(),
-      updatedBy: req.user?.uid
-    });
-
-    const updatedSettings = await getDoc(settingsRef);
-    res.json({ key: req.params.key, value: updatedSettings.data()?.[req.params.key] });
-  } catch (error: any) {
-    console.error('Update setting error:', error);
-    res.status(500).json({
-      error: 'Failed to update setting',
-      message: error.message
-    });
   }
-});
+);
 
-export default router; 
+export default router;
