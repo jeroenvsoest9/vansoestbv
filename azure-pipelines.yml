@@ -1,0 +1,76 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: van-soest-cms-variables
+
+stages:
+  - stage: Build
+    displayName: Build stage
+    jobs:
+      - job: Build
+        displayName: Build
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+            displayName: 'Install Node.js'
+
+          - script: |
+              npm install
+              cd frontend && npm install
+              cd ../backend && npm install
+            displayName: 'Install dependencies'
+
+          - script: |
+              cd frontend && npm run build
+            displayName: 'Build frontend'
+
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: 'frontend/build'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+              replaceExistingArchive: true
+
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: 'backend'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
+              replaceExistingArchive: true
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+  - stage: Deploy
+    displayName: Deploy stage
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: Deploy
+        displayName: Deploy
+        steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              appType: 'webApp'
+              appName: '$(webAppName)'
+              package: '$(Pipeline.Workspace)/drop/frontend.zip'
+              deploymentMethod: 'auto'
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              appType: 'webApp'
+              appName: '$(backendAppName)'
+              package: '$(Pipeline.Workspace)/drop/backend.zip'
+              deploymentMethod: 'auto' 

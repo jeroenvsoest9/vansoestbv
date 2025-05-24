@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+        working-directory: backend
+      - name: Lint
+        run: npm run lint
+        working-directory: backend
+      - name: Build
+        run: npm run build
+        working-directory: backend
+      - name: Test
+        run: npm test
+        working-directory: backend
+      # Optioneel: .env vullen vanuit GitHub secrets
+      # - name: Copy .env
+      #   run: echo "$ENV_FILE" > .env
+      #   env:
+      #     ENV_FILE: ${{ secrets.ENV_FILE }}
+      #   working-directory: backend 

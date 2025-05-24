@@ -1,0 +1,32 @@
+{
+  "name": "bouw-app-2025",
+  "version": "1.0.0",
+  "description": "All-in-one bouw applicatie voor Van Soest Bouw en Advies B.V.",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start:backend": "cd packages/backend && npm start",
+    "start:frontend": "cd packages/frontend && npm start",
+    "dev:backend": "cd packages/backend && npm run dev",
+    "dev:frontend": "cd packages/frontend && npm run dev",
+    "install:all": "npm install && cd packages/backend && npm install && cd ../frontend && npm install",
+    "build": "cd packages/frontend && npm run build",
+    "test": "concurrently \"cd packages/backend && npm test\" \"cd packages/frontend && npm test\""
+  },
+  "keywords": [
+    "bouw",
+    "construction",
+    "van-soest",
+    "offerte",
+    "project-management"
+  ],
+  "author": "Van Soest Bouw en Advies B.V.",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 
